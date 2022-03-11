@@ -1,0 +1,90 @@
+[
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "os,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os.",
+        "description": "os.",
+        "detail": "os.",
+        "documentation": {}
+    },
+    {
+        "label": "AES",
+        "importPath": "Crypto.Cipher",
+        "description": "Crypto.Cipher",
+        "isExtraImport": true,
+        "detail": "Crypto.Cipher",
+        "documentation": {}
+    },
+    {
+        "label": "Counter",
+        "importPath": "Crypto.Util",
+        "description": "Crypto.Util",
+        "isExtraImport": true,
+        "detail": "Crypto.Util",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "NoIndent",
+        "kind": 6,
+        "importPath": "node_modules.aes-js.generate-tests",
+        "description": "node_modules.aes-js.generate-tests",
+        "peekOfCode": "class NoIndent(object):\n    def __init__(self, value):\n        self.value = value\ndef default(o, encoder=json.JSONEncoder()):\n    if isinstance(o, NoIndent):\n        return '__' + json.dumps(o.value) + '__'\n    return encoder.default(o)\nimport os, time\nTests = []\n# compare against a known working implementation",
+        "detail": "node_modules.aes-js.generate-tests",
+        "documentation": {}
+    },
+    {
+        "label": "default",
+        "kind": 2,
+        "importPath": "node_modules.aes-js.generate-tests",
+        "description": "node_modules.aes-js.generate-tests",
+        "peekOfCode": "def default(o, encoder=json.JSONEncoder()):\n    if isinstance(o, NoIndent):\n        return '__' + json.dumps(o.value) + '__'\n    return encoder.default(o)\nimport os, time\nTests = []\n# compare against a known working implementation\nfrom Crypto.Cipher import AES as KAES\nfrom Crypto.Util import Counter as KCounter\nfor mode in [ 'CBC', 'CTR',  'CFB', 'ECB', 'OFB' ]:",
+        "detail": "node_modules.aes-js.generate-tests",
+        "documentation": {}
+    },
+    {
+        "label": "Tests",
+        "kind": 5,
+        "importPath": "node_modules.aes-js.generate-tests",
+        "description": "node_modules.aes-js.generate-tests",
+        "peekOfCode": "Tests = []\n# compare against a known working implementation\nfrom Crypto.Cipher import AES as KAES\nfrom Crypto.Util import Counter as KCounter\nfor mode in [ 'CBC', 'CTR',  'CFB', 'ECB', 'OFB' ]:\n    (tt_ksetup, tt_kencrypt, tt_kdecrypt) = (0.0, 0.0, 0.0)\n    (tt_setup, tt_encrypt, tt_decrypt) = (0.0, 0.0, 0.0)\n    count = 0\n    for key_size in (128, 192, 256):\n        for test in xrange(1, 8):",
+        "detail": "node_modules.aes-js.generate-tests",
+        "documentation": {}
+    },
+    {
+        "label": "reJavaScript",
+        "kind": 5,
+        "importPath": "node_modules.aes-js.run-readme",
+        "description": "node_modules.aes-js.run-readme",
+        "peekOfCode": "reJavaScript = re.compile('```javascript((.|\\n)*?)```')\nreadmeData = file('README.md').read()\nprint 'const aesjs = require(\"./index.js\");'\nfor (example, nl) in reJavaScript.findall(readmeData):\n    print 'console.log(\"=====================\");'\n    print '(function() {'\n    print '    try {'\n    print 'console.log(%r)' % example\n    for line in example.split('\\n'):\n        print (' ' * 8) + line",
+        "detail": "node_modules.aes-js.run-readme",
+        "documentation": {}
+    },
+    {
+        "label": "readmeData",
+        "kind": 5,
+        "importPath": "node_modules.aes-js.run-readme",
+        "description": "node_modules.aes-js.run-readme",
+        "peekOfCode": "readmeData = file('README.md').read()\nprint 'const aesjs = require(\"./index.js\");'\nfor (example, nl) in reJavaScript.findall(readmeData):\n    print 'console.log(\"=====================\");'\n    print '(function() {'\n    print '    try {'\n    print 'console.log(%r)' % example\n    for line in example.split('\\n'):\n        print (' ' * 8) + line\n    print '    } catch (error) { console.log(\"ERROR: \",  error); }'",
+        "detail": "node_modules.aes-js.run-readme",
+        "documentation": {}
+    }
+]

@@ -1,6 +1,7 @@
 import { trpc } from "@/utils/trpc";
-//import { getMetaMaskHelper } from "@/utils/getMetaMaskHelper"
+import { OnboardingButton } from "@/utils/getMetaMaskHelper"
 import { getNFTsForVote } from "@/utils/getRandomIndex"
+
 export default function Home() {
 
 //const {isConnected, isInstalled } = method
@@ -25,7 +26,7 @@ export default function Home() {
   //need to sign in w MetaMask
   //connect and read NFTs from wallet
   //compare the NFTs in cleint wallet to DB if not in DB add it
-  //randomly select two NFTs from database and compare
+  //randomly select two NFTs from database and comparegetMetaMaskHelper
   //display
   //take vote send answer request to DB
 
@@ -42,7 +43,7 @@ const [first, second] = getNFTsForVote();
         <div className="w-16 h-16 bg-red-800">{second}</div>
       </div>
       <div className="flex-col p-12">
-      Import NFTs or Sign into metamask or Install MetaMask
+      <OnboardingButton />
       </div>
     </div>
   )
