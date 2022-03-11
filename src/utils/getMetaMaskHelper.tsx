@@ -5,11 +5,14 @@ const ONBOARD_TEXT = 'Click here to install MetaMask!';
 const CONNECT_TEXT = 'Connect';
 const CONNECTED_TEXT = 'Connected';
 
+declare var window: any
+
 export function OnboardingButton() {
   const [buttonText, setButtonText] = React.useState(ONBOARD_TEXT);
   const [isDisabled, setDisabled] = React.useState(false);
   const [accounts, setAccounts] = React.useState([]);
   const onboarding = React.useRef<MetaMaskOnboarding>();
+
 
   React.useEffect(() => {
     if (!onboarding.current) {
@@ -22,7 +25,7 @@ export function OnboardingButton() {
       if (accounts.length > 0) {
         setButtonText(CONNECTED_TEXT);
         setDisabled(true);
-        onboarding.current.stopOnboarding();
+        onboarding?.current?.stopOnboarding();
       } else {
         setButtonText(CONNECT_TEXT);
         setDisabled(false);
@@ -31,7 +34,7 @@ export function OnboardingButton() {
   }, [accounts]);
 
   React.useEffect(() => {
-    function handleNewAccounts(newAccounts) {
+    function handleNewAccounts(newAccounts?:any) {
       setAccounts(newAccounts);
     }
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
@@ -49,9 +52,9 @@ export function OnboardingButton() {
     if (MetaMaskOnboarding.isMetaMaskInstalled()) {
       window.ethereum
         .request({ method: 'eth_requestAccounts' })
-        .then((newAccounts) => setAccounts(newAccounts));
+        .then((newAccounts?:any) => setAccounts(newAccounts));
     } else {
-      onboarding.current.startOnboarding();
+      onboarding?.current?.startOnboarding();
     }
   };
 
