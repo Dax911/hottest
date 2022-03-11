@@ -1,9 +1,14 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import 'tailwindcss/tailwind.css'
 
-const Home: NextPage = () => {
+import { trpc } from "@/utils/trpc";
+
+export default function Home() {
+  const { data, isLoading } = trpc.useQuery(["hello", { text: "Dax" }]);
+
+  if (isLoading) return <div>Loading...</div>;
+
+  if (data) return <div>{data.greeting}</div>;
+
+
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
       <div className="text-2xl text-center">Hot or Not? <br />Which NFT is better?</div>
@@ -14,10 +19,8 @@ const Home: NextPage = () => {
         <div className="w-16 h-16 bg-red-200" />
       </div>
       <div className="flex-col p-12">
-      Connect NFTs
+      Import NFTs or Sign into metamask or Install MetaMask
       </div>
     </div>
   )
 }
-
-export default Home
