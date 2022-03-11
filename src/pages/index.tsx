@@ -1,5 +1,5 @@
 import { trpc } from "@/utils/trpc";
-import { getMetaMaskHelper } from "@utils/getMetaMaskHelper"
+//import { getMetaMaskHelper } from "@/utils/getMetaMaskHelper"
 import { getNFTsForVote } from "@/utils/getRandomIndex"
 export default function Home() {
 
