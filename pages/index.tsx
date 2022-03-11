@@ -13,6 +13,9 @@ const Home: NextPage = () => {
         <div className="p-8">Vs</div>
         <div className="w-16 h-16 bg-red-200" />
       </div>
+      <div className="flex-col p-12">
+      Connect NFTs
+      </div>
     </div>
   )
 }
