@@ -1,4 +1,3 @@
-
 import { trpc } from "@/utils/trpc";
 
 export default function Home() {
@@ -7,7 +6,6 @@ export default function Home() {
   if (isLoading) return <div>Loading...</div>;
 
   if (data) return <div>{data.greeting}</div>;
-
 
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
