@@ -39,11 +39,12 @@ export default function Home() {
 
 //should i just have an entry feild for wallet addresses? and do it from that?
 
-const [ids, updateIds] = useState(getNFTsForVote());
+const [ids, updateIds] = useState(() => getNFTsForVote());
 const [first, second] = ids;
 
 
 const firstNFT = trpc.useQuery(["get-NFT-by-Id", {id: accounts}])
+const firstNFTs = JSON.stringify(firstNFT)
 console.log(firstNFT.data)
 
   return (
@@ -56,7 +57,8 @@ console.log(firstNFT.data)
         <div className="w-16 h-16 bg-red-800">{second}</div>
       </div>
       <div className="flex-col p-12">
-      There should be something returned after this message:  {strNFTs}
+      There should be something returned after this message:
+      <img src={firstNFT.data?.ownedNfts.entries} />
 
       <OnboardingButton />
       {accounts}
