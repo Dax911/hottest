@@ -1,6 +1,7 @@
 import { trpc } from "@/utils/trpc";
 import { OnboardingButton } from "@/utils/getMetaMaskHelper"
 import { getNFTsForVote } from "@/utils/getRandomIndex"
+import { fetchNFTs } from "@/utils/getNFTs"
 
 export default function Home() {
 

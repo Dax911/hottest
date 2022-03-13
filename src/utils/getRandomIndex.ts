@@ -4,7 +4,7 @@ const MAX_INDEX_SIZE = 500
 export const getNFTlocation: (notThisOne?: number) => number = (
   notThisOne
 ) => {
-  const randNFTindexNumberforLocation = Math.floor(Math.random()*(MAX_INDEX_SIZE - 1));
+  const randNFTindexNumberforLocation = Math.floor(Math.random()*MAX_INDEX_SIZE);
 
   if (randNFTindexNumberforLocation != notThisOne) return randNFTindexNumberforLocation
   return getNFTlocation(notThisOne)
