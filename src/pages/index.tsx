@@ -1,7 +1,11 @@
 import { trpc } from "@/utils/trpc";
-import { OnboardingButton } from "@/utils/getMetaMaskHelper"
+import { OnboardingButton, accounts } from "@/utils/getMetaMaskHelper"
 import { getNFTsForVote } from "@/utils/getRandomIndex"
-import { fetchNFTs } from "@/utils/getNFTs"
+import { useState } from "react"
+import strNFTs from "@/utils/getNFTs"
+
+
+
 
 export default function Home() {
 
@@ -31,8 +35,16 @@ export default function Home() {
   //display
   //take vote send answer request to DB
 
+  // Using HTTPS
 
-const [first, second] = getNFTsForVote();
+//should i just have an entry feild for wallet addresses? and do it from that?
+
+const [ids, updateIds] = useState(getNFTsForVote());
+const [first, second] = ids;
+
+
+const firstNFT = trpc.useQuery(["get-NFT-by-Id", {id: accounts}])
+console.log(firstNFT.data)
 
   return (
     <div className="h-screen w-screen flex flex-col justify-center items-center">
@@ -44,7 +56,10 @@ const [first, second] = getNFTsForVote();
         <div className="w-16 h-16 bg-red-800">{second}</div>
       </div>
       <div className="flex-col p-12">
+      There should be something returned after this message:  {strNFTs}
+
       <OnboardingButton />
+      {accounts}
       </div>
     </div>
   )
