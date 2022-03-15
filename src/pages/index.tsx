@@ -66,7 +66,7 @@ console.log(firstNFT.data[2].address)
       <div className="p-2" />
       <div className="flex items-center justify-between max-w-2xl p-8 border rounded">
         <div className="w-16 h-16 bg-red-800">
-          <Image alt="nft"src={firstNFT.data[2].image} width={100} height={100} />
+          <img src={firstNFT.data[2].image} />
           {firstNFT.data[2].name}</div>
         <div className="p-8">Vs</div>
         <div className="w-16 h-16 bg-red-800">{first}</div>
