@@ -3,8 +3,9 @@ import { OnboardingButton, accounts } from "@/utils/getMetaMaskHelper"
 import { getNFTsForVote } from "@/utils/getRandomIndex"
 import { useState } from "react"
 import strNFTs from "@/utils/getNFTs"
-
-
+import { Nft } from "@alch/alchemy-web3"
+import Image from 'next/image';
+//import { dataOps } from "@/utils/dataOps"
 
 
 export default function Home() {
@@ -42,27 +43,40 @@ export default function Home() {
 const [ids, updateIds] = useState(() => getNFTsForVote());
 const [first, second] = ids;
 
-
+const voteForHottest = () => {
+  //todo: fire mutation to persist vote
+}
 const firstNFT = trpc.useQuery(["get-NFT-by-Id", {id: accounts}])
-const firstNFTs = JSON.stringify(firstNFT)
-console.log(firstNFT.data)
+const secondNFT = trpc.useQuery(["get-NFT-by-Id", {id: accounts}])
 
+if (firstNFT.isLoading) {
+  return <p>Loading...</p>
+} else {
+console.log(firstNFT.data)
+console.log(firstNFT.data[2].address)
+
+
+
+//iterate over the NFTs and display them
+
+  
   return (
-    <div className="h-screen w-screen flex flex-col justify-center items-center">
+    <div className="flex flex-col items-center justify-center w-screen h-screen">
       <div className="text-2xl text-center">Hot or Not?<br />Which NFT is better?</div>
       <div className="p-2" />
-      <div className="border rounded p-8 flex justify-between items-center max-w-2xl">
-        <div className="w-16 h-16 bg-red-800">{first}</div>
+      <div className="flex items-center justify-between max-w-2xl p-8 border rounded">
+        <div className="w-16 h-16 bg-red-800">
+          <Image alt="nft"src={firstNFT.data[2].image} width={100} height={100} />
+          {firstNFT.data[2].name}</div>
         <div className="p-8">Vs</div>
-        <div className="w-16 h-16 bg-red-800">{second}</div>
+        <div className="w-16 h-16 bg-red-800">{first}</div>
       </div>
       <div className="flex-col p-12">
-      There should be something returned after this message:
-      <img src={firstNFT.data?.ownedNfts.entries} />
-
+      How hany NFTs do I see in your wallet: {" "}
       <OnboardingButton />
       {accounts}
       </div>
     </div>
   )
+}
 }

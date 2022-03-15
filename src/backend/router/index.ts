@@ -1,5 +1,5 @@
 import * as trpc from "@trpc/server";
-import { createAlchemyWeb3 } from "@alch/alchemy-web3"
+import { createAlchemyWeb3, Nft } from "@alch/alchemy-web3"
 import { z } from "zod";
 
 const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
@@ -10,10 +10,19 @@ export const appRouter = trpc.router().query("get-NFT-by-Id", {
   input: z.object({ id: z.any() }),
   async resolve({ input }) {
     const Web3api = createAlchemyWeb3(`https://eth-mainnet.alchemyapi.io/v2/${apiKey}`)
-
     const nfts = await Web3api.alchemy.getNfts({owner: accounts})
-    return nfts;
+
+    const output = nfts.ownedNfts.map(nft => {
+      return {
+        address: nft.contract.address,
+        title: nft.title,
+        name: nft.metadata.name,
+        image: nft.metadata.image,
+      }
+    })
+    return output;
   }
+
 })
 
 // export type definition of API
