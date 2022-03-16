@@ -15,7 +15,7 @@ export default function Home() {
   //if isInstalled == false
   //  return install staleTime
 
-  //if isInstalled == true && isConnected ==false or error
+  //if isInstalled == true && isConnected == false or error
   //return state for not connected (SignIN)
 
   //while isInstalled == true && isConnected == true
