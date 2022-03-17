@@ -58,12 +58,14 @@ export function OnboardingButton() {
     }
   };
 
+  console.log(accounts);
+
   return (
     <div className="2xl">
-      <button className="rounded-lg px-4 py-2 bg-blue-500 text-blue-100" disabled={isDisabled} onClick={onClick}>
+      <button className="px-4 py-2 text-blue-100 bg-blue-500 rounded-lg" disabled={isDisabled} onClick={onClick}>
         {buttonText}
       </button>
     </div>
 
   );
-}
+  }

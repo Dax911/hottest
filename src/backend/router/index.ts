@@ -23,7 +23,7 @@ export const appRouter = trpc.router().query( "get-NFT-by-Id", {
         indices: nft.totalCount,
       }
     } )
-    return output;
+    return nfts;
   }
 
 } )
