@@ -2,7 +2,7 @@ import * as trpc from "@trpc/server";
 import { createAlchemyWeb3, Nft } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { modifyRouteRegex } from "next/dist/lib/load-custom-routes";
-
+import { prisma } from ""
 const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 //sha.eth
 const account = '0xC33881b8FD07d71098b440fA8A3797886D831061' //this will be replaced by a passed arugument for currently signed in accouts
@@ -24,6 +24,20 @@ export const appRouter = trpc.router().query( "get-NFT-by-Id", {
       }
     } )
     return nfts;
+  }
+
+} ).mutation( "cast-vote", {
+  input: z.object( {
+    votedFor: z.number(),
+    votedAgainst: z.number(),
+  } ),
+  async resolve( { input } ) {
+    const voteInDB = await prisma.vote.create( {
+      data: {
+        ...input,
+      },
+    } )
+    return { success: true, vote: voteInDB };
   }
 
 } )
