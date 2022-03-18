@@ -58,7 +58,7 @@ export function OnboardingButton() {
     }
   };
 
-  console.log(accounts);
+  
 
   return (
     <div className="2xl">

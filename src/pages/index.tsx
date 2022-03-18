@@ -2,10 +2,6 @@ import { trpc } from '@/utils/trpc'
 import { OnboardingButton } from '@/utils/getMetaMaskHelper'
 import { getNFTsForVote } from '@/utils/getRandomIndex'
 import React, { useState } from 'react'
-import strNFTs from '@/utils/getNFTs'
-import { Nft } from '@alch/alchemy-web3'
-import Image from 'next/image'
-//import { dataOps } from "@/utils/dataOps"
 
 
 const btn =
@@ -50,10 +46,10 @@ export default function Home() {
   const firstNFT = trpc.useQuery(['get-NFT-by-Id', { id: accounts }])
   const secondNFT = trpc.useQuery(['get-NFT-by-Id', { id: accounts }])
 
-  if (firstNFT.isLoading && accounts.length > 0) {
+  if (firstNFT.isLoading && accounts.length < 0) {
     return <p>Loading...</p>
   } else {
-    console.log(firstNFT.data)
+    console.log(firstNFT)
     console.log(accounts)
     //console.log(firstNFT.data[2].address)
 
