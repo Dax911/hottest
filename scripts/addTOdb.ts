@@ -1,5 +1,5 @@
 import { getNFTsForVote } from "@/utils/getRandomIndex";
-import { createAlchemyWeb3, Nft } from "@alch/alchemy-web3";
+import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3";
 import MetaMaskOnboarding from '@metamask/onboarding';
 
 
@@ -14,35 +14,44 @@ import { prisma } from "../src/backend/utils/prisma";
 //const account: string = getWalletAddress()
 
 const doFill = async () => {
-    const accounts: string = 'httpjunkie.eth';
+    const accounts: string = 'shawn.eth';
 
     const Web3api = createAlchemyWeb3(
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
     );
     const nfts = await (Web3api.alchemy.getNfts( { owner: accounts } ) )
-
+      const nullVal = "www.null.com"
     //const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
       //  Web3api.alchemy.getNfts( { owner: accounts } )});
     //console.log(nft)
-
     //const allNfts = ( await Web3api.alchemy.getNfts( { accounts } ) ).totalCount;
 
-    const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
+    const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
+      if (nft.id.tokenMetadata.tokenType === "ERC721" || nft.metadata.image.includes("data:image")) {
         return {
-          id: nft.totalCount,
+          //id: nft.id.tokenId,
           name: nft.metadata.name,
           imageUrl: nft.metadata.image,
           contractAddress: nft.contract.address,
-          owner: 'httpjunkie.eth',
-        }
+          owner: accounts,
+        } 
+      }else {
+          return {
+            //id: nft.contract.address,
+            name: nullVal,
+            imageUrl: nullVal,
+            contractAddress: nullVal,
+            owner: accounts,
+          }
+        
+      }
       } );
-
 
     const creation = await prisma.nft.createMany( {
         data: formattedNfts,
     } );
 
-    console.log( creation );
+    console.log( "Creation?", creation );
 }
 
 doFill();

@@ -2,14 +2,14 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
@@ -17,23 +17,23 @@ model Vote {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  votedFor       Nft @relation(name: "votesFor", fields: [votedForId], references: [id])
-  votedForId     Int
-  votedAgainst   Nft @relation(name: "votesAgainst", fields: [votedAgainstId], references: [id])
-  votedAgainstId Int
+  votedFor       Nft    @relation(name: "votesFor", fields: [votedForId], references: [contractAddress])
+  votedForId     String
+  votedAgainst   Nft    @relation(name: "votesAgainst", fields: [votedAgainstId], references: [contractAddress])
+  votedAgainstId String
 
   @@index([votedForId])
   @@index([votedAgainstId])
 }
 
 model Nft {
-  id        Int      @id
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  name            String
-  imageUrl        String
-  contractAddress String
-  owner           String //owner will end up just being the wallet address from React.useState
-  votedFor        Vote[] @relation(name: "votesFor")
-  votedAgainst    Vote[] @relation(name: "votesAgainst")
+  name            String? @default("Not an actual NFT")
+  imageUrl        String? @default("https://lh3.googleusercontent.com/BZplkkrAXupi_CAGBHSy15DCykNV1ifK2WQymvfctHqIClvyucDXoyONGaLOcxjzm_xc6eW5GrXKb-XQ3U_vHbVHGzQUxPT48cqh=w600")
+  contractAddress String? @default("0x0000000000000000000000000000000000000000")
+  owner           String? @default("Alice and Bob") //owner will end up just being the wallet address from React.useState
+  votedFor        Vote[]  @relation(name: "votesFor")
+  votedAgainst    Vote[]  @relation(name: "votesAgainst")
 }

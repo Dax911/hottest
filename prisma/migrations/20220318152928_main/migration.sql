@@ -2,8 +2,8 @@
 CREATE TABLE `Vote` (
     `id` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `votedForId` INTEGER NOT NULL,
-    `votedAgainstId` INTEGER NOT NULL,
+    `votedForId` VARCHAR(191) NOT NULL,
+    `votedAgainstId` VARCHAR(191) NOT NULL,
 
     INDEX `Vote_votedForId_idx`(`votedForId`),
     INDEX `Vote_votedAgainstId_idx`(`votedAgainstId`),
@@ -12,7 +12,7 @@ CREATE TABLE `Vote` (
 
 -- CreateTable
 CREATE TABLE `Nft` (
-    `id` INTEGER NOT NULL,
+    `id` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `name` VARCHAR(191) NOT NULL,
     `imageUrl` VARCHAR(191) NOT NULL,

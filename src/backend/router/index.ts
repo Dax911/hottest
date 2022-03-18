@@ -1,5 +1,5 @@
 import * as trpc from "@trpc/server";
-import { createAlchemyWeb3, Nft } from "@alch/alchemy-web3"
+import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 
@@ -16,7 +16,7 @@ export const appRouter = trpc.router().query( "get-NFT-by-Id", {
     const Web3api = createAlchemyWeb3( `https://eth-mainnet.alchemyapi.io/v2/${apiKey}` )
     const nfts = await Web3api.alchemy.getNfts( { owner: accounts } )
 
-    const output = nfts.ownedNfts?.map(nft => {
+    const output = nfts.ownedNfts?.map((nft: NftMetadata) => {
       return {
         name: nft.metadata.name,
         imageUrl: nft.metadata.image,
