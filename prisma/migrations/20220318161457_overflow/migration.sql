@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Nft` ADD COLUMN `overflow` VARCHAR(191) NULL DEFAULT 'NULLISH';
