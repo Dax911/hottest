@@ -14,7 +14,7 @@ import { prisma } from "../src/backend/utils/prisma";
 //const account: string = getWalletAddress()
 
 const doFill = async () => {
-    const accounts: string = 'shawn.eth';
+    const accounts: string = 'httpjunkie.eth';
 
     const Web3api = createAlchemyWeb3(
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
@@ -26,10 +26,10 @@ const doFill = async () => {
     //console.log(nft)
     //const allNfts = ( await Web3api.alchemy.getNfts( { accounts } ) ).totalCount;
 
+
     const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
       if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
         return {
-          //id: nft.id.tokenId,
           name: nft.metadata.name,
           imageUrl: nft.metadata.image,
           contractAddress: nft.contract.address,

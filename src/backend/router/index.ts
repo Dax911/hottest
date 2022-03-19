@@ -2,6 +2,7 @@ import * as trpc from "@trpc/server";
 import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
+import { getNFTsForVote } from "@/utils/getRandomIndex";
 
 const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 //sha.eth
@@ -10,26 +11,19 @@ const accounts = 'httpjunkie.eth'
 const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
 
 
-export const appRouter = trpc.router().query( "get-NFT-by-Id", {
-  input: z.object( { id: z.any() } ),
-  async resolve( { input } ) {
-    const Web3api = createAlchemyWeb3( `https://eth-mainnet.alchemyapi.io/v2/${apiKey}` )
-    const nfts = await Web3api.alchemy.getNfts( { owner: accounts } )
+export const appRouter = trpc.router().query( "get-NFT-pair", {
+  async resolve( ) {
+    const [first, second] = getNFTsForVote();
 
-    const output = nfts.ownedNfts?.map((nft: NftMetadata) => {
-      if (!nft.metadata.image.includes("data:image")) {
-      return {
-        name: nft.metadata.name,
-        imageUrl: nft.metadata.image,
-        contractAddress: nft.contract.address,
-        owner: nft.owner,
+    const both = await prisma.nft.findMany( {
+      where: { id: { in: [first, second] } },
+    } );
 
-      } }
-      
-  
-    } )
+    if (both.length !== 2) {
+      throw new Error( "Could not find both NFTs" );
+    }
 
-    return output;
+    return { firstNft: both[0], secondNft: both[1] };
   }
 
 } ).mutation( "cast-vote", {

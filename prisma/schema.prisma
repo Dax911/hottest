@@ -18,16 +18,16 @@ model Vote {
   createdAt DateTime @default(now())
 
   votedFor       Nft    @relation(name: "votesFor", fields: [votedForId], references: [id])
-  votedForId     String
+  votedForId     Int
   votedAgainst   Nft    @relation(name: "votesAgainst", fields: [votedAgainstId], references: [id])
-  votedAgainstId String
+  votedAgainstId Int
 
   @@index([votedForId])
   @@index([votedAgainstId])
 }
 
 model Nft {
-  id        String   @id @default(cuid())
+  id        Int   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
   name            String? @default("Not an actual NFT")

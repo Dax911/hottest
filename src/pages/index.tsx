@@ -40,17 +40,18 @@ export default function Home() {
 
   const [ids, updateIds] = useState(() => getNFTsForVote())
   const [first, second] = ids
+  
 
   const voteForHottest = () => {
     //todo: fire mutation to persist vote
   }
-  const firstNFT = trpc.useQuery(['get-NFT-by-Id', { id: accounts }])
-  const secondNFT = trpc.useQuery(['get-NFT-by-Id', { id: accounts }])
+  const pairNFTs = trpc.useQuery(['get-NFT-pair'])
+  const secondNFT = trpc.useQuery(['get-NFT-pair'])
 
-  if (firstNFT.isLoading && accounts.length < 0) {
+  if (pairNFTs.isLoading && accounts.length < 0) {
     return <p>Loading...</p>
   } else {
-    console.log(firstNFT)
+    console.log(pairNFTs)
     console.log(accounts)
     //console.log(firstNFT.data[2].address)
 
@@ -62,7 +63,7 @@ export default function Home() {
 
     //iterate over the NFTs and display them
     return (
-      <div className="flex flex-col items-center justify-center w-screen h-screen">
+ <div className="flex flex-col items-center justify-center w-screen h-screen">
         <div className="text-2xl text-center">
           Hot or Not?
           <br />
@@ -71,29 +72,28 @@ export default function Home() {
         <div className="p-2" />
         <div className="flex items-center justify-between max-w-2xl p-8">
           <div className="w-64 h-64">
+            <img src={pairNFTs.data?.firstNft.imageUrl} />
             <div className="text-xl text-center text-white">
-            <img alt="nft" src={"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaW5ZTWluIG1lZXQiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIj48c3R5bGU+LmJhc2UgeyBmaWxsOiBibGFjazsgZm9udC1mYW1pbHk6IHNlcmlmOyBmb250LXNpemU6IDE0cHg7IH08L3N0eWxlPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IndoaXRlIiAvPjx0ZXh0IHg9IjEwIiB5PSIyMCIgY2xhc3M9ImJhc2UiPkdNLU5BQSBJL088L3RleHQ+PHRleHQgeD0iMTAiIHk9IjQwIiBjbGFzcz0iYmFzZSI+VmlzdWFsIFN0dWRpbzwvdGV4dD48dGV4dCB4PSIxMCIgeT0iNjAiIGNsYXNzPSJiYXNlIj5XaGl0ZSBUYW5rdG9wPC90ZXh0Pjx0ZXh0IHg9IjEwIiB5PSI4MCIgY2xhc3M9ImJhc2UiPlJ1c3Q8L3RleHQ+PHRleHQgeD0iMTAiIHk9IjEwMCIgY2xhc3M9ImJhc2UiPkZhcm1pbmc8L3RleHQ+PHRleHQgeD0iMTAiIHk9IjEyMCIgY2xhc3M9ImJhc2UiPlJhbWFsbGFoPC90ZXh0Pjx0ZXh0IHg9IjEwIiB5PSIxNDAiIGNsYXNzPSJiYXNlIj5EaXZlcmdlbnQ8L3RleHQ+PHRleHQgeD0iMTAiIHk9IjE2MCIgY2xhc3M9ImJhc2UiPlBob2JpYTwvdGV4dD48L3N2Zz4="} width={800} height={800} />
-              <div className="p-8" />
-              <button
-                className={btn}
-                onClick={() => voteForHottest(firstNFT.data[2])}
-              >
-                Vote
-              </button>
+            {pairNFTs.data?.firstNft.name}
+            <div className='p-2' />
+            <button className={btn} onClick={() => voteForHottest(firstNFT.data[2])}>
+              Vote
+            </button>
             </div>
           </div>
           <div className="p-8">Vs</div>
           <div className="w-64 h-64">
+            <img src={pairNFTs.data?.secondNft.imageUrl} />
             <div className="text-xl text-center text-white">
-              <button
-                className={btn}
-                onClick={() => voteForHottest(firstNFT.data[2])}
-              >
-                Vote
-              </button>
+            {pairNFTs.data?.secondNft.name}
+            <div className='p-2' />
+            <button className={btn} onClick={() => voteForHottest(firstNFT.data[2])}>
+              Vote
+            </button>
             </div>
           </div>
         </div>
+        <div className="p-2" />
         <div className="flex-col p-12">
           <OnboardingButton />
           {accounts}
