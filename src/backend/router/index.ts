@@ -17,13 +17,16 @@ export const appRouter = trpc.router().query( "get-NFT-by-Id", {
     const nfts = await Web3api.alchemy.getNfts( { owner: accounts } )
 
     const output = nfts.ownedNfts?.map((nft: NftMetadata) => {
+      if (!nft.metadata.image.includes("data:image")) {
       return {
         name: nft.metadata.name,
         imageUrl: nft.metadata.image,
         contractAddress: nft.contract.address,
         owner: nft.owner,
 
-      }
+      } }
+      
+  
     } )
 
     return output;

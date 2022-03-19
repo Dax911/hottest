@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import { trpc } from '@/utils/trpc'
 import { OnboardingButton } from '@/utils/getMetaMaskHelper'
 import { getNFTsForVote } from '@/utils/getRandomIndex'
@@ -71,6 +72,8 @@ export default function Home() {
         <div className="flex items-center justify-between max-w-2xl p-8">
           <div className="w-64 h-64">
             <div className="text-xl text-center text-white">
+            <img alt="nft" src={"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHByZXNlcnZlQXNwZWN0UmF0aW89InhNaW5ZTWluIG1lZXQiIHZpZXdCb3g9IjAgMCAzNTAgMzUwIj48c3R5bGU+LmJhc2UgeyBmaWxsOiBibGFjazsgZm9udC1mYW1pbHk6IHNlcmlmOyBmb250LXNpemU6IDE0cHg7IH08L3N0eWxlPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IndoaXRlIiAvPjx0ZXh0IHg9IjEwIiB5PSIyMCIgY2xhc3M9ImJhc2UiPkdNLU5BQSBJL088L3RleHQ+PHRleHQgeD0iMTAiIHk9IjQwIiBjbGFzcz0iYmFzZSI+VmlzdWFsIFN0dWRpbzwvdGV4dD48dGV4dCB4PSIxMCIgeT0iNjAiIGNsYXNzPSJiYXNlIj5XaGl0ZSBUYW5rdG9wPC90ZXh0Pjx0ZXh0IHg9IjEwIiB5PSI4MCIgY2xhc3M9ImJhc2UiPlJ1c3Q8L3RleHQ+PHRleHQgeD0iMTAiIHk9IjEwMCIgY2xhc3M9ImJhc2UiPkZhcm1pbmc8L3RleHQ+PHRleHQgeD0iMTAiIHk9IjEyMCIgY2xhc3M9ImJhc2UiPlJhbWFsbGFoPC90ZXh0Pjx0ZXh0IHg9IjEwIiB5PSIxNDAiIGNsYXNzPSJiYXNlIj5EaXZlcmdlbnQ8L3RleHQ+PHRleHQgeD0iMTAiIHk9IjE2MCIgY2xhc3M9ImJhc2UiPlBob2JpYTwvdGV4dD48L3N2Zz4="} width={800} height={800} />
+              <div className="p-8" />
               <button
                 className={btn}
                 onClick={() => voteForHottest(firstNFT.data[2])}

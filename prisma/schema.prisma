@@ -17,9 +17,9 @@ model Vote {
   id        String   @id @default(cuid())
   createdAt DateTime @default(now())
 
-  votedFor       Nft    @relation(name: "votesFor", fields: [votedForId], references: [contractAddress])
+  votedFor       Nft    @relation(name: "votesFor", fields: [votedForId], references: [id])
   votedForId     String
-  votedAgainst   Nft    @relation(name: "votesAgainst", fields: [votedAgainstId], references: [contractAddress])
+  votedAgainst   Nft    @relation(name: "votesAgainst", fields: [votedAgainstId], references: [id])
   votedAgainstId String
 
   @@index([votedForId])
@@ -31,7 +31,7 @@ model Nft {
   createdAt DateTime @default(now())
 
   name            String? @default("Not an actual NFT")
-  imageUrl        String? @default("https://lh3.googleusercontent.com/BZplkkrAXupi_CAGBHSy15DCykNV1ifK2WQymvfctHqIClvyucDXoyONGaLOcxjzm_xc6eW5GrXKb-XQ3U_vHbVHGzQUxPT48cqh=w600")
+  imageUrl        String? @db.VarChar(3000) @default("https://lh3.googleusercontent.com/BZplkkrAXupi_CAGBHSy15DCykNV1ifK2WQymvfctHqIClvyucDXoyONGaLOcxjzm_xc6eW5GrXKb-XQ3U_vHbVHGzQUxPT48cqh=w600")
   contractAddress String? @default("0x0000000000000000000000000000000000000000")
   owner           String? @default("Alice and Bob") //owner will end up just being the wallet address from React.useState
   votedFor        Vote[]  @relation(name: "votesFor")

@@ -20,14 +20,14 @@ const doFill = async () => {
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
     );
     const nfts = await (Web3api.alchemy.getNfts( { owner: accounts } ) )
-      const nullVal = "www.null.com"
+      const nullVal = null
     //const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
       //  Web3api.alchemy.getNfts( { owner: accounts } )});
     //console.log(nft)
     //const allNfts = ( await Web3api.alchemy.getNfts( { accounts } ) ).totalCount;
 
     const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
-      if (nft.id.tokenMetadata.tokenType === "ERC721" || nft.metadata.image.includes("data:image")) {
+      if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
         return {
           //id: nft.id.tokenId,
           name: nft.metadata.name,
