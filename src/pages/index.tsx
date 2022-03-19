@@ -4,7 +4,6 @@ import { OnboardingButton } from '@/utils/getMetaMaskHelper'
 import { getNFTsForVote } from '@/utils/getRandomIndex'
 import React, { useState } from 'react'
 
-
 const btn =
   'inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
 
@@ -36,7 +35,7 @@ export default function Home() {
   // Using HTTPS
 
   //should i just have an entry feild for wallet addresses? and do it from that?
-  const accounts = React.useState([] as any);
+  const accounts = React.useState([] as any).toString();
 
   const [ids, updateIds] = useState(() => getNFTsForVote())
   const [first, second] = ids
@@ -53,14 +52,21 @@ export default function Home() {
   } else {
     console.log(pairNFTs)
     console.log(accounts)
+
     //console.log(firstNFT.data[2].address)
+    const voteMutation = trpc.useMutation(["cast-vote"]);
 
     const voteForHottest = (selected: number) => {
-      //fire mutation to persist vote
-      updateIds(getNFTsForVote())
-      console.log('Vote for hottest: ' + selected)
-    }
-
+      if (selected === first) {
+        voteMutation.mutate({ votedFor: first, votedAgainst: second });
+      } else {
+        voteMutation.mutate({ votedFor: second, votedAgainst: first });
+      }
+      // todo: fire mutation to persist changes
+      updateIds(getNFTsForVote());
+    };
+    const firstNFTimage = pairNFTs.data?.firstNft.imageUrl || 'https://picsum.photos/200/300'
+    const secondNFTimage = pairNFTs.data?.secondNft.imageUrl || 'https://picsum.photos/200/300'
     //iterate over the NFTs and display them
     return (
  <div className="flex flex-col items-center justify-center w-screen h-screen">
@@ -72,22 +78,22 @@ export default function Home() {
         <div className="p-2" />
         <div className="flex items-center justify-between max-w-2xl p-8">
           <div className="w-64 h-64">
-            <img src={pairNFTs.data?.firstNft.imageUrl} />
+            <img src={firstNFTimage} />
             <div className="text-xl text-center text-white">
             {pairNFTs.data?.firstNft.name}
             <div className='p-2' />
-            <button className={btn} onClick={() => voteForHottest(firstNFT.data[2])}>
+            <button className={btn} onClick={() => voteForHottest(first)}>
               Vote
             </button>
             </div>
           </div>
           <div className="p-8">Vs</div>
           <div className="w-64 h-64">
-            <img src={pairNFTs.data?.secondNft.imageUrl} />
+            <img src={secondNFTimage} />
             <div className="text-xl text-center text-white">
             {pairNFTs.data?.secondNft.name}
             <div className='p-2' />
-            <button className={btn} onClick={() => voteForHottest(firstNFT.data[2])}>
+            <button className={btn} onClick={() => voteForHottest(second)}>
               Vote
             </button>
             </div>
