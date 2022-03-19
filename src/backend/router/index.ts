@@ -26,21 +26,21 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     return { firstNft: both[0], secondNft: both[1] };
   }
 
-} ).mutation( "cast-vote", {
-  input: z.object( {
+} ).mutation("cast-vote", {
+  input: z.object({
     votedFor: z.number(),
     votedAgainst: z.number(),
-  } ),
-  async resolve( { input } ) {
-    const voteInDB = await prisma.vote.create( {
+  }),
+  async resolve({ input }) {
+    const voteInDb = await prisma.vote.create({
       data: {
-        ...input,
+        votedAgainstId: input.votedAgainst,
+        votedForId: input.votedFor,
       },
-    } )
-    return { success: true, vote: voteInDB };
-  }
-
-} )
+    });
+    return { success: true, vote: voteInDb };
+  },
+});
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
