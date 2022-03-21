@@ -7,12 +7,15 @@ const CONNECTED_TEXT = 'Connected';
 
 declare var window: any
 
+
+
 export function OnboardingButton() {
   const [buttonText, setButtonText] = React.useState(ONBOARD_TEXT);
   const [isDisabled, setDisabled] = React.useState(false);
   const [accounts, setAccounts] = React.useState([]);
   const onboarding = React.useRef<MetaMaskOnboarding>();
 
+  const account = useMetaMask()
 
   React.useEffect(() => {
     if (!onboarding.current) {
@@ -57,6 +60,16 @@ export function OnboardingButton() {
       onboarding?.current?.startOnboarding();
     }
   };
+
+  const connectUser = useCallback(async () => {
+    try {
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+      if (provider) {
+        const accounts = await window.ethereum.request({ method: 'eth_accounts' })
+        setAccount(accounts)
+    
+      }
+
 
   
 

@@ -14,6 +14,8 @@ import { prisma } from "../src/backend/utils/prisma";
 //const account: string = getWalletAddress()
 
 const doFill = async () => {
+
+
     const accounts: string = 'httpjunkie.eth';
 
     const Web3api = createAlchemyWeb3(

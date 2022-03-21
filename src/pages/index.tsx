@@ -4,29 +4,44 @@
 import { trpc } from '@/utils/trpc'
 import { OnboardingButton } from '@/utils/getMetaMaskHelper'
 import { getNFTsForVote } from '@/utils/getRandomIndex'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import { MetaMaskInpageProvider } from '@metamask/providers';
+import MetaMaskOnboarding from '@metamask/onboarding';
+import { getAccountPath } from 'ethers/lib/utils';
+var Web3 = require('web3')
 
 const btn =
   'inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
 
-export default function Home() {
-  
-  const accounts = React.useState([] as any).toString();
+declare var window: any
 
+export default function Home() {
+
+  async function onInit() {
+    if (!window.ethereum) {
+      return
+    }
+    await window.ethereum.enable();
+    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    const account = accounts[0];
+
+    return account;
+}
+  const accounts = onInit()
   const [ids, updateIds] = useState(() => getNFTsForVote())
   const [first, second] = ids
   
 
-  
   const pairNFTs = trpc.useQuery(['get-NFT-pair'])
-  const secondNFT = trpc.useQuery(['get-NFT-pair'])
 
-  if (pairNFTs.isLoading && accounts.length < 0) {
+  
+
+  if (pairNFTs.isLoading && accounts.length < 0 ) {
     return(<p>Loading...</p>)
   } else {
     console.log(pairNFTs)
     console.log(accounts)
-
+    //console.log(owners)
     const voteMutation = trpc.useMutation(["cast-vote"]);
 
     const voteForHottest = (selected: number) => {
@@ -39,6 +54,7 @@ export default function Home() {
       updateIds(getNFTsForVote());
     };
 
+    
     const firstNFTimage = pairNFTs.data?.firstNft.imageUrl || 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640'
     const secondNFTimage = pairNFTs.data?.secondNft.imageUrl || 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640'
 
@@ -77,6 +93,7 @@ export default function Home() {
         <div className="flex-col p-12">
           <OnboardingButton />
           {accounts}
+
         </div>
       </div>
     )
