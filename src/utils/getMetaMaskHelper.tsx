@@ -15,7 +15,6 @@ export function OnboardingButton() {
   const [accounts, setAccounts] = React.useState([]);
   const onboarding = React.useRef<MetaMaskOnboarding>();
 
-  const account = useMetaMask()
 
   React.useEffect(() => {
     if (!onboarding.current) {
@@ -61,17 +60,6 @@ export function OnboardingButton() {
     }
   };
 
-  const connectUser = useCallback(async () => {
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      if (provider) {
-        const accounts = await window.ethereum.request({ method: 'eth_accounts' })
-        setAccount(accounts)
-    
-      }
-
-
-  
 
   return (
     <div className="2xl">

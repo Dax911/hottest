@@ -2,19 +2,11 @@ import { createContext, useEffect, useCallback } from 'react'
 import { useImmerReducer } from 'use-immer'
 import { ethers } from 'ethers'
 import { reducer } from './reducers/reducer'
-import { initialState } from './initialState.js'
+import { initialState } from './initialState'
 
 
 export const ViewContext = createContext(initialState)
 
-//utils
-export const bigNumberify = (amt) => {
-  return ethers.utils.parseEther(amt)
-}
-export const smolNumberify = (amt, decimals = 18) => {
-  return parseFloat(ethers.utils.formatUnits(amt, decimals))
-}
-//utils
 
 export const ViewProvider = ({ children }) => {
   const [state, dispatch] = useImmerReducer(reducer, initialState)

@@ -13,7 +13,7 @@ const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
 
 
 export const appRouter = trpc.router().query( "get-NFT-pair", {
-  async resolve( ) {
+  async resolve() {
     //const accounts = await web3.eth.getAccounts(0)  
 
     const [first, second] = getNFTsForVote();
@@ -22,33 +22,51 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       where: { id: { in: [first, second] } },
     } );
 
-    if (both.length !== 2) {
+    if ( both.length !== 2 ) {
       throw new Error( "Could not find both NFTs" );
     }
 
     return { firstNft: both[0], secondNft: both[1] };
   }
 
-} ).mutation("cast-vote", {
-  input: z.object({
+} ).mutation( "cast-vote", {
+  input: z.object( {
     votedFor: z.number(),
     votedAgainst: z.number(),
-  }),
-  async resolve({ input }) {
-    const voteInDb = await prisma.vote.create({
+  } ),
+  async resolve( { input } ) {
+    const voteInDb = await prisma.vote.create( {
       data: {
         votedAgainstId: input.votedAgainst,
         votedForId: input.votedFor,
       },
-    });
+    } );
     return { success: true, vote: voteInDb };
   },
 }
-  
 
-    
 
-  )
+
+
+).query( "get-NFT-owners", {
+  input: z.object( {
+    owner: z.string(),
+  } ),
+  async resolve( { input } ) {
+    const owner = input.owner;
+    const nfts = await prisma.nft.findMany( {
+      where: {
+        owner: owner,
+      },
+    } );
+    if ( nfts.owner === accounts ) {
+      return true
+    } else {
+      return false;
+    }
+  },
+} )
+
 
 // export type definition of API
 export type AppRouter = typeof appRouter;
