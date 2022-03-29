@@ -1,10 +1,10 @@
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3";
 import MetaMaskOnboarding from '@metamask/onboarding';
-import getAccount from "@/utils/getAccount";
 
 import React, { useState } from "react";
-import { prisma } from "../src/backend/utils/prisma";
+import { prisma } from "@/backend/utils/prisma";
+import getAccount from "@/utils/getAccount";
 
 //async function getWalletAddress() {
 //    const account = await ethereum.enable();
@@ -13,15 +13,20 @@ import { prisma } from "../src/backend/utils/prisma";
 
 //const account: string = getWalletAddress()
 
-const doFill = async () => {
+export default async function doFill() {
+  const accounts = async () => {
+    const a = await getAccount();
+    return a
+  };
 
+  const account: string = await (await accounts()).toString();
 
-    const accounts: string = getAccount().toString();
+    //const accounts: string = getAccount().toString();
 
     const Web3api = createAlchemyWeb3(
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
     );
-    const nfts = await (Web3api.alchemy.getNfts( { owner: accounts } ) )
+    const nfts = await (Web3api.alchemy.getNfts( { owner: account } ) )
       const nullVal = null
     //const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
       //  Web3api.alchemy.getNfts( { owner: accounts } )});
@@ -35,7 +40,7 @@ const doFill = async () => {
           name: nft.metadata.name,
           imageUrl: nft.metadata.image,
           contractAddress: nft.contract.address,
-          owner: accounts,
+          owner: account,
         } 
       }else {
           return {
@@ -43,7 +48,7 @@ const doFill = async () => {
             name: nullVal,
             imageUrl: nullVal,
             contractAddress: nullVal,
-            owner: accounts,
+            owner: account,
           }
         
       }
@@ -56,4 +61,3 @@ const doFill = async () => {
     console.log( "Creation?", creation );
 }
 
-doFill();

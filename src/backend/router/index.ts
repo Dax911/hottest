@@ -4,13 +4,20 @@ import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import { web3 } from "web3"
+import getAccount from "@/utils/getAccount";
 
 const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 //sha.eth
-const account = '0xC33881b8FD07d71098b440fA8A3797886D831061' //this will be replaced by a passed arugument for currently signed in accouts
-const accounts = 'httpjunkie.eth'
-const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
+//const account = '0xC33881b8FD07d71098b440fA8A3797886D831061' //this will be replaced by a passed arugument for currently signed in accouts
+//const accounts = 'httpjunkie.eth'
+//const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
 
+const accounts = async () => {
+  const a = await getAccount()
+  console.log(a)
+  return a.toString() + 'HELLO WORLD'
+  
+}
 
 export const appRouter = trpc.router().query( "get-NFT-pair", {
   async resolve() {
@@ -29,8 +36,8 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     return { firstNft: both[0], secondNft: both[1] };
   }
 
-} ).mutation( "cast-vote", {
-  input: z.object( {
+} ).mutation("cast-vote", {
+  input: z.object( { 
     votedFor: z.number(),
     votedAgainst: z.number(),
   } ),
@@ -48,24 +55,29 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 
 
 
-).query( "get-NFT-owners", {
-  input: z.object( {
-    owner: z.string(),
-  } ),
-  async resolve( { input } ) {
-    const owner = input.owner;
+).mutation( "get-NFT-owners", {
+  async resolve(  ) {
+
+
+    const accounts = async () => {
+      const a = await getAccount()
+      console.log(a)
+      return a.toString() + 'HELLO WORLD'
+    }
+
+    const account:string = await (await accounts()).toString()
+    
     const nfts = await prisma.nft.findMany( {
-      where: {
-        owner: owner,
-      },
+      where: { owner: account },
     } );
-    if ( nfts.owner === accounts ) {
-      return true
+
+    if ( nfts.length === 0 ) {
+      return { isPresent: true }
     } else {
-      return false;
+    return { isPresent: false }};
     }
   },
-} )
+)
 
 
 // export type definition of API

@@ -4,7 +4,7 @@ import { prisma } from "../backend/utils/prisma";
 export const getNFTlocation: (notThisOne?: number) => number = (
   notThisOne
 ) => {
-  const MAX_INDEX_SIZE = 100
+  const MAX_INDEX_SIZE = 100 //TODO: make this dynamic
 
   const randNFTindexNumberforLocation = Math.floor(Math.random()*MAX_INDEX_SIZE);
 
