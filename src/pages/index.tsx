@@ -12,6 +12,7 @@ var Web3 = require("web3");
 //import { ViewProvider } from '@/utils/viewProvider';
 import getAccount from "@/utils/getAccount";
 import doFill from "@/utils/addTOdb";
+//import doFill from "@/utils/addTOdb";
 
 const btn =
   "inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
@@ -23,21 +24,34 @@ export default function Home() {
 
   const [ids, updateIds] = useState(() => getNFTsForVote());
   const [first, second] = ids;
-  //const isPresent = async () => {
-  //  trpc.useMutation(['get-NFT-owners'])
-  //};
-
+  const currentAccount = getAccount()
+  console.log(currentAccount)
   //const accounts = "0x232323232323232323232323"
   //const [accounts, setAccounts] = useState(() => addtoDatabase())
   const pairNFTs = trpc.useQuery(["get-NFT-pair"]);
   //const getOwners = trpc.useMutation(['get-NFT-owners'])
+ 
+  const getOwnerBool = trpc.useQuery(["get-NFT-owners"]);
 
-  const isOwnerPresent = (isPresent: boolean) => {
-    //let isPresent = trpc.useMutation(["get-NFT-owners"]);
+  const voteMutation = trpc.useMutation(["cast-vote"]);
 
-    if (isPresent = true) {
+  const voteForHottest = (selected: number) => {
+
+    if (selected === first) {
+      voteMutation.mutate({ votedFor: first, votedAgainst: second });
+    } else {
+      voteMutation.mutate({ votedFor: second, votedAgainst: first });
+    }
+    // todo: fire mutation to persist changes
+    updateIds(getNFTsForVote());
+  };
+
+  const ownerBool = getOwnerBool.data;
+
+  const isOwnerPresent = async () => {
+    if (ownerBool === true) {
       console.log("THE USER HAS ALREADY ADDED TO THE DATABASE");
-    } else if (isPresent = false) {
+    } else {
       console.log("THE USER HAS NOT ADDED TO THE DATABASE");
 
       try {
@@ -88,17 +102,7 @@ export default function Home() {
     //const isOwnerData = trpc.useMutation(['get-NFT-owners'])
     //console.log(isOwnerData)
 
-    const voteForHottest = (selected: number) => {
-      const voteMutation = trpc.useMutation(["cast-vote"]);
-
-      if (selected === first) {
-        voteMutation.mutate({ votedFor: first, votedAgainst: second });
-      } else {
-        voteMutation.mutate({ votedFor: second, votedAgainst: first });
-      }
-      // todo: fire mutation to persist changes
-      updateIds(getNFTsForVote());
-    };
+    
 
     const firstNFTimage =
       pairNFTs.data?.firstNft.imageUrl ||
@@ -107,6 +111,7 @@ export default function Home() {
       pairNFTs.data?.secondNft.imageUrl ||
       "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640";
 
+      
     return (
       <div className="flex flex-col items-center justify-center w-screen h-screen">
         <div className="text-2xl text-center">

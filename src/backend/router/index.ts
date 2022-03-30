@@ -18,7 +18,6 @@ const accounts = async () => {
   return a.toString() + 'HELLO WORLD'
   
 }
-
 export const appRouter = trpc.router().query( "get-NFT-pair", {
   async resolve() {
     //const accounts = await web3.eth.getAccounts(0)  
@@ -55,29 +54,32 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 
 
 
-).mutation( "get-NFT-owners", {
+).query( "get-NFT-owners", {
   async resolve(  ) {
-
 
     const accounts = async () => {
       const a = await getAccount()
       console.log(a)
-      return a.toString() + 'HELLO WORLD'
+      return a
     }
 
     const account:string = await (await accounts()).toString()
-    
+    //console.log(account)
+    //const account = 'httpjunkie.eth'
     const nfts = await prisma.nft.findMany( {
       where: { owner: account },
     } );
-
+    console.log(nfts)
     if ( nfts.length === 0 ) {
-      return { isPresent: true }
+      return false
     } else {
-    return { isPresent: false }};
+      return true;
     }
-  },
-)
+    
+    },
+    
+  })
+
 
 
 // export type definition of API

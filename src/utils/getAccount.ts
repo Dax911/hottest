@@ -10,7 +10,7 @@ web3 = new Web3(web3.currentProvider)
 export default async function getAccount() {
     //await window.ethereum.enable();
     const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-    const nullaccount = '';
+    const nullaccount = null;
     if (accounts[0] === nullaccount) {
         return 'null';
     } else {
