@@ -18,6 +18,7 @@ const accounts = async () => {
   return a.toString() + 'HELLO WORLD'
 
 }
+
 export const appRouter = trpc.router().query( "get-NFT-pair", {
   async resolve() {
     //const accounts = await web3.eth.getAccounts(0)

@@ -25,8 +25,8 @@ export default function Home() {
   const [ids, updateIds] = useState(() => getNFTsForVote());
   const [first, second] = ids;
   const currentAccount = getAccount();
-  const [accountz, useAccountz]= useState(() => getAccount());
-  //rewrite the whole call structure and compare account values to useEffect 
+  //const [accountz, useAccountz]= useState(() => getAccount());
+  //rewrite the whole call structure and compare account values to useEffect
   console.log(currentAccount)
   //const accounts = "0x232323232323232323232323"
   //const [accounts, setAccounts] = useState(() => addtoDatabase())
