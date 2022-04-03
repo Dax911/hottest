@@ -2,15 +2,15 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import { trpc } from "@/utils/trpc";
-import { OnboardingButton } from "@/utils/getMetaMaskHelper";
+//import { OnboardingButton } from "@/utils/getMetaMaskHelper";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import React, { useContext, useState } from "react";
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { getAccountPath } from "ethers/lib/utils";
+//import { getAccountPath } from "ethers/lib/utils";
 var Web3 = require("web3");
 //import { ViewProvider } from '@/utils/viewProvider';
 import getAccount from "@/utils/getAccount";
-import doFill from "@/utils/addTOdb";
+//import doFill from "@/utils/addTOdb";
 //import doFill from "@/utils/addTOdb";
 
 const btn =
@@ -214,4 +214,5 @@ export default function Home() {
       </div>
     );
   }
+}
 }
