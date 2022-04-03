@@ -5,7 +5,6 @@ import { trpc } from "@/utils/trpc";
 import { OnboardingButton } from "@/utils/getMetaMaskHelper";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import React, { useContext, useState } from "react";
-import { MetaMaskInpageProvider } from "@metamask/providers";
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { getAccountPath } from "ethers/lib/utils";
 var Web3 = require("web3");
@@ -17,9 +16,66 @@ import doFill from "@/utils/addTOdb";
 const btn =
   "inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
 
-declare var window: any;
+  const ONBOARD_TEXT = 'Click here to install MetaMask!';
+  const CONNECT_TEXT = 'Connect';
+  const CONNECTED_TEXT = 'Connected';
+
+  declare var window: any
 
 export default function Home() {
+
+
+
+  function OnboardingButton() {
+    const [buttonText, setButtonText] = React.useState(ONBOARD_TEXT);
+    const [isDisabled, setDisabled] = React.useState(false);
+    const [accounts, setAccounts] = React.useState([]);
+    const onboarding = React.useRef<MetaMaskOnboarding>();
+
+
+    React.useEffect(() => {
+      if (!onboarding.current) {
+        onboarding.current = new MetaMaskOnboarding();
+      }
+    }, []);
+
+    React.useEffect(() => {
+      if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+        if (accounts.length > 0) {
+          setButtonText(CONNECTED_TEXT);
+          setDisabled(true);
+          onboarding?.current?.stopOnboarding();
+        } else {
+          setButtonText(CONNECT_TEXT);
+          setDisabled(false);
+        }
+      }
+    }, [accounts]);
+
+    React.useEffect(() => {
+      function handleNewAccounts(newAccounts?:any) {
+        setAccounts(newAccounts);
+      }
+      if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+        window.ethereum
+          .request({ method: 'eth_requestAccounts' })
+          .then(handleNewAccounts);
+        window.ethereum.on('accountsChanged', handleNewAccounts);
+        return () => {
+          window.ethereum.off('accountsChanged', handleNewAccounts);
+        };
+      }
+    }, []);
+
+    const onClick = () => {
+      if (MetaMaskOnboarding.isMetaMaskInstalled()) {
+        window.ethereum
+          .request({ method: 'eth_requestAccounts' })
+          .then((newAccounts?:any) => setAccounts(newAccounts));
+      } else {
+        onboarding?.current?.startOnboarding();
+      }
+    };
 
 
   const [ids, updateIds] = useState(() => getNFTsForVote());
@@ -147,8 +203,11 @@ export default function Home() {
         </div>
         <div className="p-2" />
         <div className="flex-col p-12">
-          <OnboardingButton />
-        </div>
+        <div className="2xl">
+          <button className="px-4 py-2 text-blue-100 bg-blue-500 rounded-lg" disabled={isDisabled} onClick={onClick}>
+            {buttonText}
+          </button>
+        </div>        </div>
         <button className={btn} onClick={() => isOwnerPresent()}>
           Add to Database
         </button>
