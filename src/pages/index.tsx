@@ -26,7 +26,7 @@ export default function Home() {
 
 
 
-  function OnboardingButton() {
+  const OnboardingButton = () => {
     const [buttonText, setButtonText] = React.useState(ONBOARD_TEXT);
     const [isDisabled, setDisabled] = React.useState(false);
     const [accounts, setAccounts] = React.useState([]);
@@ -204,7 +204,7 @@ export default function Home() {
         <div className="p-2" />
         <div className="flex-col p-12">
         <div className="2xl">
-          <button className="px-4 py-2 text-blue-100 bg-blue-500 rounded-lg" disabled={isDisabled} onClick={onClick}>
+          <button className="px-4 py-2 text-blue-100 bg-blue-500 rounded-lg" disabled={isDisabled} onClick={() => OnboardingButton()}>
             {buttonText}
           </button>
         </div>        </div>
