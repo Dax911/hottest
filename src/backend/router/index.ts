@@ -58,14 +58,14 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 ).query( "get-NFT-owners", {
   async resolve(  ) {
 
-    const accounts = 'daxdev.eth'
+    const account = 'daxdev.eth'
     //async () => {
     //  const a = await getAccount()
     //  console.log(a)
     //  return a
   //}
 
-    const account:string = await (await accounts()).toString()
+    //const account:string = await (await accounts()).toString()
     //console.log(account)
     //const account = 'httpjunkie.eth'
     const nfts = await prisma.nft.findMany( {
