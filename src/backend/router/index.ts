@@ -3,7 +3,7 @@ import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
-import { web3 } from "web3"
+//import { web3 } from "web3"
 import getAccount from "@/utils/getAccount";
 
 const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
@@ -16,11 +16,11 @@ const accounts = async () => {
   const a = await getAccount()
   console.log(a)
   return a.toString() + 'HELLO WORLD'
-  
+
 }
 export const appRouter = trpc.router().query( "get-NFT-pair", {
   async resolve() {
-    //const accounts = await web3.eth.getAccounts(0)  
+    //const accounts = await web3.eth.getAccounts(0)
 
     const [first, second] = getNFTsForVote();
 
@@ -36,7 +36,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
   }
 
 } ).mutation("cast-vote", {
-  input: z.object( { 
+  input: z.object( {
     votedFor: z.number(),
     votedAgainst: z.number(),
   } ),
@@ -75,9 +75,9 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     } else {
       return true;
     }
-    
+
     },
-    
+
   })
 
 
