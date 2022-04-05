@@ -3,6 +3,7 @@ import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
+//import { web3 } from "web3"
 import getAccount from "@/utils/getAccount";
 //import doFill from "@/utils/addTOdb";
 
@@ -27,7 +28,7 @@ const accounts = async () => {
 //TODO: add a function to call max size of table and then use that to create a random index
 export const appRouter = trpc.router().query( "get-NFT-pair", {
   async resolve() {
-    //const accounts = await web3.eth.getAccounts(0)  
+    //const accounts = await web3.eth.getAccounts(0)
 
     const [first, second] = getNFTsForVote();
 
@@ -42,7 +43,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     return { firstNft: both[0], secondNft: both[1] };
   }
 
-} ).mutation( "cast-vote", {
+} ).mutation("cast-vote", {
   input: z.object( {
     votedFor: z.number(),
     votedAgainst: z.number(),
@@ -74,17 +75,18 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     const nfts = await prisma.nft.findMany( {
       where: { owner: account },
     } );
-    console.log( nfts )
-    return nfts;
-    //if ( nfts.length === 0 ) {
-    //  return { state: true, address: nfts.map( nft => nft.owner ) } ;
-    //} else {
-    //  return { state: false, address: nfts.map( nft => nft.owner ) } ;
-    //}
+    console.log(nfts)
+    if ( nfts.length === 0 ) {
+      return false
+    } else {
+      return true;
+    }
 
-  },
+    },
 
-})
+  })
+
+
 
 
 // export type definition of API

@@ -16,17 +16,19 @@ declare var window: any;
 
 
 export default function Home() {
-  
+
 
   const [ids, updateIds] = useState(() => getNFTsForVote());
   const [first, second] = ids;
-  const currentAccount = getAccount()
+  const currentAccount = getAccount();
+  const [accountz, useAccountz]= useState(() => getAccount());
+  //rewrite the whole call structure and compare account values to useEffect 
   console.log(currentAccount)
   //const accounts = "0x232323232323232323232323"
   //const [accounts, setAccounts] = useState(() => addtoDatabase())
   const pairNFTs = trpc.useQuery(["get-NFT-pair"]);
   //const getOwners = trpc.useMutation(['get-NFT-owners'])
- 
+
   const getOwnerBool = trpc.useQuery(["get-NFT-owners"]);
 
   const voteMutation = trpc.useMutation(["cast-vote"]);
@@ -55,7 +57,7 @@ export default function Home() {
       } catch (error) {
         console.log(error);
       }
-      
+
     }
   };
 
@@ -98,7 +100,7 @@ export default function Home() {
     //const isOwnerData = trpc.useMutation(['get-NFT-owners'])
     //console.log(isOwnerData)
 
-    
+
 
     const firstNFTimage =
       pairNFTs.data?.firstNft.imageUrl ||
@@ -107,7 +109,7 @@ export default function Home() {
       pairNFTs.data?.secondNft.imageUrl ||
       "https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png?w=640";
 
-      
+
     return (
       <div className="flex flex-col items-center justify-center w-screen h-screen">
         <div className="text-2xl text-center">
