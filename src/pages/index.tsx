@@ -4,20 +4,16 @@
 import { trpc } from "@/utils/trpc";
 import { OnboardingButton } from "@/utils/getMetaMaskHelper";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
-import React, { useContext, useState } from "react";
-import { MetaMaskInpageProvider } from "@metamask/providers";
-import MetaMaskOnboarding from "@metamask/onboarding";
-import { getAccountPath } from "ethers/lib/utils";
+import React, { useState } from "react";
 var Web3 = require("web3");
-//import { ViewProvider } from '@/utils/viewProvider';
 import getAccount from "@/utils/getAccount";
-import doFill from "@/utils/addTOdb";
-//import doFill from "@/utils/addTOdb";
 
 const btn =
   "inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
 
 declare var window: any;
+
+
 
 export default function Home() {
   
@@ -42,14 +38,14 @@ export default function Home() {
     } else {
       voteMutation.mutate({ votedFor: second, votedAgainst: first });
     }
-    // todo: fire mutation to persist changes
+    //fires mutation to persist changes
     updateIds(getNFTsForVote());
   };
 
-  const ownerBool = getOwnerBool.data;
+  const ownerBool = getOwnerBool;
 
   const isOwnerPresent = async () => {
-    if (ownerBool === true) {
+    if (ownerBool === await currentAccount) {
       console.log("THE USER HAS ALREADY ADDED TO THE DATABASE");
     } else {
       console.log("THE USER HAS NOT ADDED TO THE DATABASE");

@@ -1,8 +1,5 @@
-import { getNFTsForVote } from "@/utils/getRandomIndex";
 import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3";
-import MetaMaskOnboarding from '@metamask/onboarding';
 
-import React, { useState } from "react";
 import { prisma } from "@/backend/utils/prisma";
 import getAccount from "@/utils/getAccount";
 
@@ -13,7 +10,7 @@ import getAccount from "@/utils/getAccount";
 
 //const account: string = getWalletAddress()
 
-export default async function doFill() {
+export async function doFill() {
   const accounts = async () => {
     const a = await getAccount();
     return a

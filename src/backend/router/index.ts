@@ -3,8 +3,8 @@ import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
-import { web3 } from "web3"
 import getAccount from "@/utils/getAccount";
+//import doFill from "@/utils/addTOdb";
 
 const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 //sha.eth
@@ -12,12 +12,19 @@ const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 //const accounts = 'httpjunkie.eth'
 //const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
 
+
+
 const accounts = async () => {
   const a = await getAccount()
-  console.log(a)
+  console.log( a )
   return a.toString() + 'HELLO WORLD'
-  
+
 }
+
+
+
+
+//TODO: add a function to call max size of table and then use that to create a random index
 export const appRouter = trpc.router().query( "get-NFT-pair", {
   async resolve() {
     //const accounts = await web3.eth.getAccounts(0)  
@@ -35,8 +42,8 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     return { firstNft: both[0], secondNft: both[1] };
   }
 
-} ).mutation("cast-vote", {
-  input: z.object( { 
+} ).mutation( "cast-vote", {
+  input: z.object( {
     votedFor: z.number(),
     votedAgainst: z.number(),
   } ),
@@ -52,34 +59,32 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 }
 
 
-
-
 ).query( "get-NFT-owners", {
-  async resolve(  ) {
+  async resolve() {
 
     const accounts = async () => {
       const a = await getAccount()
-      console.log(a)
+      console.log( a )
       return a
     }
 
-    const account:string = await (await accounts()).toString()
+    const account: string = await ( await accounts() ).toString()
     //console.log(account)
     //const account = 'httpjunkie.eth'
     const nfts = await prisma.nft.findMany( {
       where: { owner: account },
     } );
-    console.log(nfts)
-    if ( nfts.length === 0 ) {
-      return false
-    } else {
-      return true;
-    }
-    
-    },
-    
-  })
+    console.log( nfts )
+    return nfts;
+    //if ( nfts.length === 0 ) {
+    //  return { state: true, address: nfts.map( nft => nft.owner ) } ;
+    //} else {
+    //  return { state: false, address: nfts.map( nft => nft.owner ) } ;
+    //}
 
+  },
+
+})
 
 
 // export type definition of API
