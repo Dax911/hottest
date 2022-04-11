@@ -50,10 +50,10 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     account: z.string(),
   } ),
 
-  
+
   async resolve( { input } ) {
-    if (input.account === undefined) {
-      throw new Error("No account provided")
+    if ( input.account === undefined ) {
+      throw new Error( "No account provided" )
     }
 
 
@@ -70,44 +70,38 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     } else {
 
       const accounts = input.account
-        //const accounts: string = getAccount().toString();
-    
-        const Web3api = createAlchemyWeb3(
-            "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
-        );
-        const nfts = await (Web3api.alchemy.getNfts( { owner: accounts } ) )
-          const nullVal = null
-        //const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
-          //  Web3api.alchemy.getNfts( { owner: accounts } )});
-        //console.log(nft)
-        //const allNfts = ( await Web3api.alchemy.getNfts( { accounts } ) ).totalCount;
-    
-    
-        const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
-          //this probably does nothing in terms of validating the input 
-      
-      if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
-            return {
-              name: nft.metadata.name,
-              imageUrl: nft.metadata.image,
-              contractAddress: nft.contract.address,
-              owner: accounts,
-            } 
-          }else {
-              return {
-                //id: nft.contract.address,
-                name: nullVal,
-                imageUrl: nullVal,
-                contractAddress: nullVal,
-                owner: accounts,
-              }
-            
+
+      const Web3api = createAlchemyWeb3(
+        "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
+      );
+      const nfts = await ( Web3api.alchemy.getNfts( { owner: accounts } ) )
+      const nullVal = null
+
+      const formattedNfts = nfts.ownedNfts?.map( ( nft: NftMetadata ) => {
+        //this probably does nothing in terms of validating the input 
+
+        if ( nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes( "data:image" ) ) {
+          return {
+            name: nft.metadata.name,
+            imageUrl: nft.metadata.image,
+            contractAddress: nft.contract.address,
+            owner: accounts,
           }
-          } );
-    
-        const creation = await prisma.nft.createMany( {
-            data: formattedNfts,
-        } );
+        } else {
+          return {
+            //id: nft.contract.address,
+            name: nullVal,
+            imageUrl: nullVal,
+            contractAddress: nullVal,
+            owner: accounts,
+          }
+
+        }
+      } );
+
+      const creation = await prisma.nft.createMany( {
+        data: formattedNfts,
+      } );
 
       return {
         success: true,
