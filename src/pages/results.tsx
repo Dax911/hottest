@@ -44,7 +44,7 @@ const NFTListing: React.FC<{ nft: NFTQueryResult[number] | any; rank: number }> 
     <div className="relative flex items-center justify-between p-2 border-b">
       <div className="flex items-center">
         <div className="flex items-center pl-4">
-          <img src={nft.imageUrl} width={64} height={64} layout="fixed" />
+          <img src={nft.imageUrl} width={64} height={64} />
           <div className="pl-2 capitalize">{nft.name}</div>
         </div>
       </div>
