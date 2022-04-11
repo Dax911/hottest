@@ -74,7 +74,7 @@ export default function Home() {
 
       <div className="pt-8 text-2xl text-center">Which NFT is better?</div>
       <button onClick={() => databaseCheck(currentAccount)} className={btn}>
-        {isLoading ? "Loading..." : "Check Database"}
+        {isLoading ? "Loading..." : "Add Your NFTs"}
       </button>
 
       <button onClick={() => refetch()} className={btn} >
