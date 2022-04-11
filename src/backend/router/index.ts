@@ -60,31 +60,8 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 }
 
 
-).query( "get-NFT-owners", {
-  async resolve() {
+)
 
-    const accounts = async () => {
-      const a = await getAccount()
-      console.log( a )
-      return a
-    }
-
-    const account: string = await ( await accounts() ).toString()
-    //console.log(account)
-    //const account = 'httpjunkie.eth'
-    const nfts = await prisma.nft.findMany( {
-      where: { owner: account },
-    } );
-    console.log(nfts)
-    if ( nfts.length === 0 ) {
-      return { success: false };
-    } else {
-      return { success: true, nfts };
-    }
-
-    },
-
-  })
 
 
 

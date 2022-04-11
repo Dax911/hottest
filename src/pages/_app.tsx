@@ -1,13 +1,20 @@
 import "tailwindcss/tailwind.css";
 import "../styles/global.css";
 import type { AppProps } from "next/app";
-import { Provider } from "wagmi";
+import { defaultChains, WagmiProvider } from 'wagmi'
+import { InjectedConnector } from "wagmi/connectors/injected";
+
+const connector = new InjectedConnector({
+  chains: [...defaultChains],
+})
+
+
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Provider>
+      <WagmiProvider autoConnect connectors={[connector]}>
       <Component {...pageProps} />
-    </Provider>
+      </WagmiProvider>
   );
 }
 

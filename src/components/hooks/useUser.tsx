@@ -1,19 +1,20 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAccount, useConnect, useNetwork } from "wagmi";
 import { utils } from "ethers";
-import { usePrevious } from "./usePrevious";
+import usePrevious from "./usePrevious";
 
-export function usePrevious( value ) {
-	const ref = useRef();
 
-	useEffect( () => {
-		ref.current = value;
-	}, [value] );
 
-	return ref.current;
-}
+type WalletStates =
+  | 'noMetamask'
+  | 'notConnected'
+  | 'wrongNetwork'
+  | 'signature'
+  | 'connected'
 
-export const useUserState = ( route?) => {
+
+
+export const useUserState = ( ) => {
 	// wagmi hooks that handle talking to metamask
 	const [{ data }, disconnect] = useAccount();
 	const [{ data: connectData, error: connectError }, connect] = useConnect();
@@ -21,7 +22,7 @@ export const useUserState = ( route?) => {
 		useNetwork();
 
 	// states that are used to control the UI
-	const [state, setState] = useState( "notConnected" );
+	const [state, setState] = useState<WalletStates>('notConnected');	
 	const [loading, setLoading] = useState( false );
 	const [isSwitching, setIsSwitching] = useState( false );
 

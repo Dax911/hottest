@@ -2,16 +2,16 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import { trpc } from "@/utils/trpc";
-import { OnboardingButton } from "@/utils/getMetaMaskHelper";
+//import { OnboardingButton } from "@/utils/getMetaMaskHelper";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import React, { useState } from "react";
 var Web3 = require("web3");
 import getAccount from "@/utils/getAccount";
-
+import { useUserState } from "../components/hooks/useUser";
 const btn =
   "inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
 
-declare var window: any;
+//declare var window: any;
 
 
 
@@ -20,16 +20,8 @@ export default function Home() {
 
   const [ids, updateIds] = useState(() => getNFTsForVote());
   const [first, second] = ids;
-  const currentAccount = getAccount();
-  const [accountz, useAccountz]= useState(() => getAccount());
-  //rewrite the whole call structure and compare account values to useEffect 
-  console.log(currentAccount)
-  //const accounts = "0x232323232323232323232323"
-  //const [accounts, setAccounts] = useState(() => addtoDatabase())
-  const pairNFTs = trpc.useQuery(["get-NFT-pair"]);
-  //const getOwners = trpc.useMutation(['get-NFT-owners'])
+    const pairNFTs = trpc.useQuery(["get-NFT-pair"]);
 
-  const getOwnerBool = trpc.useQuery(["get-NFT-owners"]);
 
   const voteMutation = trpc.useMutation(["cast-vote"]);
 
@@ -42,65 +34,33 @@ export default function Home() {
     }
     //fires mutation to persist changes
     updateIds(getNFTsForVote());
+    
   };
 
-  const ownerBool = getOwnerBool;
 
-  const isOwnerPresent = async () => {
-    if (ownerBool === await currentAccount) {
-      console.log("THE USER HAS ALREADY ADDED TO THE DATABASE");
-    } else {
-      console.log("THE USER HAS NOT ADDED TO THE DATABASE");
+  //const isOwnerPresent = async () => {
+    //if (ownerBool === await currentAccount) {
+    //  console.log("THE USER HAS ALREADY ADDED TO THE DATABASE");
+   // } else {
+    //  console.log("THE USER HAS NOT ADDED TO THE DATABASE");
 
-      try {
-        //doFill();
-      } catch (error) {
-        console.log(error);
-      }
+    //  try {
+    //    //doFill();
+    //  } catch (error) {
+    //    console.log(error);
+    //  }
 
-    }
-  };
-
-  //const ethereum = window.ethereum;
-  //let accounts = ethereum.selectedAddress;
-
-  //import provider
-  //import the context from the provider
-  //global state provider or call methods from the provider
-
+   // }
+ // };
+ const currentAccount = useUserState().currentAccount;
+  console.log(currentAccount);
+  
   if (pairNFTs.isLoading || pairNFTs.isError) {
     return <p>Loading...</p>;
   } else {
-    //const getOwners = trpc.useMutation(['get-NFT-owners'])
-
-    //const stuff = getOwners.mutate({owner: accounts})
-    //console.log(stuff)
-    //console.log(trpc.useMutation('get-NFT-owners'), accounts)
-    //const addtoDatabase = (accounts: string) => {
-    //const getOwners = trpc.useMutation(["get-NFT-owners"])
-    //if (getOwners === (success: true)) {
-    //  console.log("undefined")
-    //} else {
-    //  console.log("defined")
-    //}
-
-    //if (getOwners.isLoading || getOwners.isError) {
-    //  return(console.log("Unable to get owners."))
-    //} else if (getOwners === accounts) {
-    //  const owner = getOwners.data.getNFTOwners(accounts)
-    //  console.log(owner)
-    //}
-    //
-    //console.log(getOwners)
+    
     console.log(pairNFTs);
-    //console.log(getOwners)
-    //console.log(accounts())
-    //console.log(owners)
-
-    //const isOwnerData = trpc.useMutation(['get-NFT-owners'])
-    //console.log(isOwnerData)
-
-
+      
 
     const firstNFTimage =
       pairNFTs.data?.firstNft.imageUrl ||
@@ -143,11 +103,8 @@ export default function Home() {
         </div>
         <div className="p-2" />
         <div className="flex-col p-12">
-          <OnboardingButton />
         </div>
-        <button className={btn} onClick={() => isOwnerPresent()}>
           Add to Database
-        </button>
       </div>
     );
   }
