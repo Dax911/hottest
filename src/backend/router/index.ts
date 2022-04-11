@@ -3,44 +3,137 @@ import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
+import { useAccount } from "wagmi";
 
-const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 //sha.eth
-const account = '0xC33881b8FD07d71098b440fA8A3797886D831061' //this will be replaced by a passed arugument for currently signed in accouts
-const accounts = 'httpjunkie.eth'
-const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
+//const account = '0xC33881b8FD07d71098b440fA8A3797886D831061' //this will be replaced by a passed arugument for currently signed in accouts
+//const accounts = 'httpjunkie.eth'
+//const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
 
 
+
+
+
+
+
+//TODO: add a function to call max size of table and then use that to create a random index
 export const appRouter = trpc.router().query( "get-NFT-pair", {
-  async resolve( ) {
+  async resolve() {
+    //const accounts = await web3.eth.getAccounts(0)
+
     const [first, second] = getNFTsForVote();
 
     const both = await prisma.nft.findMany( {
       where: { id: { in: [first, second] } },
     } );
 
-    if (both.length !== 2) {
+    if ( both.length !== 2 ) {
       throw new Error( "Could not find both NFTs" );
     }
 
     return { firstNft: both[0], secondNft: both[1] };
   }
 
-} ).mutation("cast-vote", {
-  input: z.object({
+} ).mutation( "cast-vote", {
+  input: z.object( {
     votedFor: z.number(),
     votedAgainst: z.number(),
-  }),
-  async resolve({ input }) {
-    const voteInDb = await prisma.vote.create({
+  } ),
+  async resolve( { input } ) {
+    const voteInDb = await prisma.vote.create( {
       data: {
         votedAgainstId: input.votedAgainst,
         votedForId: input.votedFor,
       },
-    });
+    } );
     return { success: true, vote: voteInDb };
   },
-});
+}
+
+
+).query( "get-table-size", {
+  async resolve() {
+    const tableSize = await prisma.nft.count()
+    return tableSize
+  },
+}
+
+).mutation( "add-to-db", {
+  input: z.object( {
+    account: z.string(),
+  } ),
+
+  
+  async resolve( { input } ) {
+    if (input.account === undefined) {
+      throw new Error("No account provided")
+    }
+
+
+    const isPresent = await prisma.nft.findFirst( {
+      where: {
+        owner: input.account
+      }
+    } )
+    if ( isPresent ) {
+      return {
+        success: false,
+        message: "You already have NFTs in the database."
+      }
+    } else {
+
+      const accounts = input.account
+        //const accounts: string = getAccount().toString();
+    
+        const Web3api = createAlchemyWeb3(
+            "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
+        );
+        const nfts = await (Web3api.alchemy.getNfts( { owner: accounts } ) )
+          const nullVal = null
+        //const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
+          //  Web3api.alchemy.getNfts( { owner: accounts } )});
+        //console.log(nft)
+        //const allNfts = ( await Web3api.alchemy.getNfts( { accounts } ) ).totalCount;
+    
+    
+        const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
+          //this probably does nothing in terms of validating the input 
+      
+      if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
+            return {
+              name: nft.metadata.name,
+              imageUrl: nft.metadata.image,
+              contractAddress: nft.contract.address,
+              owner: accounts,
+            } 
+          }else {
+              return {
+                //id: nft.contract.address,
+                name: nullVal,
+                imageUrl: nullVal,
+                contractAddress: nullVal,
+                owner: accounts,
+              }
+            
+          }
+          } );
+    
+        const creation = await prisma.nft.createMany( {
+            data: formattedNfts,
+        } );
+
+      return {
+        success: true,
+        message: "NFTs added to your account"
+
+      }
+    }
+  }
+}
+)
+
+
+
 
 // export type definition of API
 export type AppRouter = typeof appRouter;

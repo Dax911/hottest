@@ -1,10 +1,7 @@
-import { getNFTsForVote } from "@/utils/getRandomIndex";
 import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3";
-import MetaMaskOnboarding from '@metamask/onboarding';
-import getAccount from "@/utils/getAccount";
+import { useAccount } from "wagmi";
 
-import React, { useState } from "react";
-import { prisma } from "../src/backend/utils/prisma";
+import { prisma } from "@/backend/utils/prisma";
 
 //async function getWalletAddress() {
 //    const account = await ethereum.enable();
@@ -13,10 +10,14 @@ import { prisma } from "../src/backend/utils/prisma";
 
 //const account: string = getWalletAddress()
 
-const doFill = async () => {
+export async function DoFill() {
 
 
-    const accounts: string = getAccount().toString();
+  //const account: string = await (await accounts()).toString();
+
+  const account: any = await useAccount();
+  const accounts = account.address;
+    //const accounts: string = getAccount().toString();
 
     const Web3api = createAlchemyWeb3(
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
@@ -30,7 +31,9 @@ const doFill = async () => {
 
 
     const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
-      if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
+      //this probably does nothing in terms of validating the input 
+	
+	if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
         return {
           name: nft.metadata.name,
           imageUrl: nft.metadata.image,
@@ -55,7 +58,4 @@ const doFill = async () => {
 
     console.log( "Creation?", creation );
 }
-//api useeffect prisma
 
-
-doFill();

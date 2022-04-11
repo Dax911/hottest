@@ -1,13 +1,26 @@
 import "tailwindcss/tailwind.css";
 import "../styles/global.css";
 import type { AppProps } from "next/app";
+import { defaultChains, WagmiProvider } from 'wagmi'
+import { InjectedConnector } from "wagmi/connectors/injected";
+
+const connector = new InjectedConnector({
+  chains: [...defaultChains],
+})
+
+
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+      <WagmiProvider autoConnect connectors={[connector]}>
+      <Component {...pageProps} />
+      </WagmiProvider>
+  );
 }
 
 import { withTRPC } from "@trpc/next";
 import type { AppRouter } from "@/backend/router";
+//remember to add wagmi wrapper
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {

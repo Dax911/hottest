@@ -7,6 +7,8 @@ const CONNECTED_TEXT = 'Connected';
 
 declare var window: any
 
+
+
 export function OnboardingButton() {
   const [buttonText, setButtonText] = React.useState(ONBOARD_TEXT);
   const [isDisabled, setDisabled] = React.useState(false);
@@ -58,7 +60,6 @@ export function OnboardingButton() {
     }
   };
 
-  
 
   return (
     <div className="2xl">
