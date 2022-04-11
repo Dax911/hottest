@@ -94,4 +94,4 @@ export const getStaticProps: GetServerSideProps = async () => {
     const DAY_IN_MILLISECONDS = 86400000;
     return { props: { nft: nftsOrdered }, revalidate: DAY_IN_MILLISECONDS };
 };
-//TODO: pagination and only showing the top 100 results
+//TODO: pagination and only showing the top 100 results later
