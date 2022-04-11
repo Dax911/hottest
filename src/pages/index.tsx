@@ -77,8 +77,9 @@ export default function Home() {
         {isLoading ? "Loading..." : "Check Database"}
       </button>
 
-      <button onClick={() => refetch()} className={btn} />
-
+      <button onClick={() => refetch()} className={btn} >
+      Refresh Options
+      </button>
       {pairNFTs && (
         <div className="flex flex-col items-center justify-between max-w-2xl p-8 md:flex-row animate-fade-in">
           <NFTListing
