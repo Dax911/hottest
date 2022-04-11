@@ -105,6 +105,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 
       return {
         success: true,
+        creation: creation,
         message: "NFTs added to your account"
 
       }
