@@ -1,11 +1,11 @@
-import { prisma } from "../backend/utils/prisma";
-
+import { trpc } from "./trpc";
 
 
 export const getNFTlocation: (notThisOne?: number) => number = (
   notThisOne
 ) => {
-  const MAX_INDEX_SIZE =  100 //TODO: make this dynamic from the database size
+
+  const MAX_INDEX_SIZE = 100;
 
   const randNFTindexNumberforLocation = Math.floor(Math.random()*MAX_INDEX_SIZE);
 

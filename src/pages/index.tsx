@@ -17,13 +17,22 @@ const btn =
 
 export default function Home() {
 
+  const currentAccount = useUserState().currentAccount;
+  console.log(currentAccount);
 
   const [ids, updateIds] = useState(() => getNFTsForVote());
   const [first, second] = ids;
-    const pairNFTs = trpc.useQuery(["get-NFT-pair"]);
-
-
+  const pairNFTs = trpc.useQuery(["get-NFT-pair"]);
+  const max = trpc.useQuery(["get-table-size"]);
+  
+  const databaseValidation = trpc.useMutation(["add-to-db"]);
+  console.log(databaseValidation);
   const voteMutation = trpc.useMutation(["cast-vote"]);
+
+  const databaseCheck = () => {
+    console.log(databaseValidation);
+  };
+
 
   const voteForHottest = (selected: number) => {
 
@@ -38,22 +47,10 @@ export default function Home() {
   };
 
 
-  //const isOwnerPresent = async () => {
-    //if (ownerBool === await currentAccount) {
-    //  console.log("THE USER HAS ALREADY ADDED TO THE DATABASE");
-   // } else {
-    //  console.log("THE USER HAS NOT ADDED TO THE DATABASE");
 
-    //  try {
-    //    //doFill();
-    //  } catch (error) {
-    //    console.log(error);
-    //  }
+ 
 
-   // }
- // };
- const currentAccount = useUserState().currentAccount;
-  console.log(currentAccount);
+
   
   if (pairNFTs.isLoading || pairNFTs.isError) {
     return <p>Loading...</p>;
@@ -104,7 +101,9 @@ export default function Home() {
         <div className="p-2" />
         <div className="flex-col p-12">
         </div>
+        <button className={btn} onClick={() => databaseCheck()}>
           Add to Database
+        </button>
       </div>
     );
   }

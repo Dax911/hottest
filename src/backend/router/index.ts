@@ -5,9 +5,10 @@ import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 //import { web3 } from "web3"
 import getAccount from "@/utils/getAccount";
+import { useUserState } from "@/components/hooks/useUser";
+import { DoFill } from "@/utils/addTOdb";
 //import doFill from "@/utils/addTOdb";
 
-const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 //sha.eth
 //const account = '0xC33881b8FD07d71098b440fA8A3797886D831061' //this will be replaced by a passed arugument for currently signed in accouts
 //const accounts = 'httpjunkie.eth'
@@ -15,12 +16,6 @@ const apiKey = '-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t'
 
 
 
-const accounts = async () => {
-  const a = await getAccount()
-  console.log( a )
-  return a.toString() + 'HELLO WORLD'
-
-}
 
 
 
@@ -43,7 +38,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     return { firstNft: both[0], secondNft: both[1] };
   }
 
-} ).mutation("cast-vote", {
+} ).mutation( "cast-vote", {
   input: z.object( {
     votedFor: z.number(),
     votedAgainst: z.number(),
@@ -60,7 +55,44 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 }
 
 
+).query( "get-table-size", {
+  async resolve() {
+    const tableSize = await prisma.nft.count()
+    return tableSize
+  },
+}
+
+).mutation( "add-to-db", {
+  input: z.object( {
+    account: z.string(),
+  } ),
+
+  async resolve( { input } ) {
+
+
+
+    const isPresent = await prisma.nft.findFirst( {
+      where: {
+        owner: input.account
+      }
+    } )
+    if ( !isPresent ) {
+      return {
+        success: false,
+        message: "You already have NFTs in your account"
+      }
+    } else {
+      DoFill()
+      return {
+        success: true,
+        message: "NFTs added to your account"
+
+      }
+    }
+  }
+}
 )
+
 
 
 

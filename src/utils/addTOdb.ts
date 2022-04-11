@@ -1,7 +1,7 @@
 import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3";
+import { useAccount } from "wagmi";
 
 import { prisma } from "@/backend/utils/prisma";
-import getAccount from "@/utils/getAccount";
 
 //async function getWalletAddress() {
 //    const account = await ethereum.enable();
@@ -10,20 +10,19 @@ import getAccount from "@/utils/getAccount";
 
 //const account: string = getWalletAddress()
 
-export async function doFill() {
-  const accounts = async () => {
-    const a = await getAccount();
-    return a
-  };
+export async function DoFill() {
 
-  const account: string = await (await accounts()).toString();
 
+  //const account: string = await (await accounts()).toString();
+
+  const account: any = await useAccount();
+  const accounts = account.address;
     //const accounts: string = getAccount().toString();
 
     const Web3api = createAlchemyWeb3(
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
     );
-    const nfts = await (Web3api.alchemy.getNfts( { owner: account } ) )
+    const nfts = await (Web3api.alchemy.getNfts( { owner: accounts } ) )
       const nullVal = null
     //const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
       //  Web3api.alchemy.getNfts( { owner: accounts } )});
@@ -39,7 +38,7 @@ export async function doFill() {
           name: nft.metadata.name,
           imageUrl: nft.metadata.image,
           contractAddress: nft.contract.address,
-          owner: account,
+          owner: accounts,
         } 
       }else {
           return {
@@ -47,7 +46,7 @@ export async function doFill() {
             name: nullVal,
             imageUrl: nullVal,
             contractAddress: nullVal,
-            owner: account,
+            owner: accounts,
           }
         
       }
