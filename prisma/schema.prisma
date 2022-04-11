@@ -8,8 +8,8 @@ generator client {
 
 datasource db {
   provider             = "mysql"
-  url                  = "mysql://s4x1gias7vgl:pscale_pw_ghYrQwBP6TSBRJ7YzJnCKC18Wk-jBmfAC1dfUucJOiU@o8bvhtyje9vx.us-west-2.psdb.cloud/hottest?sslaccept=strict"
-  shadowDatabaseUrl    = "mysql://o6zf8izugiwv:pscale_pw_d5TV0NDmueo-2jydyzxMIhCc7n7_-lKLtGuQx6SayQc@o8bvhtyje9vx.us-west-2.psdb.cloud/hottest?sslaccept=strict"
+  url                  = env("DATABASE_URL")
+  shadowDatabaseUrl    = env("SHADOW_DATABASE_URL")
   referentialIntegrity = "prisma"
 }
 
