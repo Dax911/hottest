@@ -36,7 +36,7 @@ const generateCountPercentage = (nft: NFTQueryResult[number]) => {
   return (votedFor / (votedFor + votedAgainst)) * 100;
 };
 
-const NFTListing: React.FC<{ nft: NFTQueryResult[number]; rank: number }> = ({
+const NFTListing: React.FC<{ nft: NFTQueryResult[number] | any; rank: number }> = ({
   nft,
   rank,
 }) => {
