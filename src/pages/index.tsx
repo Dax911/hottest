@@ -8,6 +8,8 @@ import React, { useState } from "react";
 var Web3 = require("web3");
 import getAccount from "@/utils/getAccount";
 import { useUserState } from "../components/hooks/useUser";
+import { isINDB } from "@/backend/router/index";
+
 const btn =
   "inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
 
@@ -15,10 +17,15 @@ const btn =
 
 
 
+
 export default function Home() {
+
+
+  
 
   const currentAccount = useUserState().currentAccount;
   console.log(currentAccount);
+
 
   const [ids, updateIds] = useState(() => getNFTsForVote());
   const [first, second] = ids;
@@ -29,9 +36,6 @@ export default function Home() {
   console.log(databaseValidation);
   const voteMutation = trpc.useMutation(["cast-vote"]);
 
-  const databaseCheck = () => {
-    console.log(databaseValidation);
-  };
 
 
   const voteForHottest = (selected: number) => {
@@ -46,6 +50,19 @@ export default function Home() {
     
   };
 
+  const databaseCheck = (account: string | undefined = currentAccount) => {
+    if (account === undefined) {
+      const accounts = '0x0000000000000000000000000000000000000000';
+      databaseValidation.mutate({ account: accounts });
+      console.log(`I added ${accounts} to the database`);
+    } else {
+      const accounts = account;
+      databaseValidation.mutate({ account: accounts });
+      console.log(`I added ${accounts} to the database`);
+
+  }
+
+  };
 
 
  
@@ -101,7 +118,7 @@ export default function Home() {
         <div className="p-2" />
         <div className="flex-col p-12">
         </div>
-        <button className={btn} onClick={() => databaseCheck()}>
+        <button className={btn} onClick={() => databaseCheck(currentAccount)}>
           Add to Database
         </button>
       </div>
