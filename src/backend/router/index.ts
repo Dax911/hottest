@@ -1,25 +1,12 @@
 import * as trpc from "@trpc/server";
-import { createAlchemyWeb3, Nft, NftMetadata } from "@alch/alchemy-web3"
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import { useAccount } from "wagmi";
 
-//sha.eth
-//const account = '0xC33881b8FD07d71098b440fA8A3797886D831061' //this will be replaced by a passed arugument for currently signed in accouts
-//const accounts = 'httpjunkie.eth'
-//const nullaccount = '0x568820334111ba2a37611F9Ad70BD074295D44C5'
 
-
-
-
-
-
-
-//TODO: add a function to call max size of table and then use that to create a random index
 export const appRouter = trpc.router().query( "get-NFT-pair", {
   async resolve() {
-    //const accounts = await web3.eth.getAccounts(0)
 
     const [first, second] = getNFTsForVote();
 
@@ -131,8 +118,6 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
   }
 }
 )
-
-
 
 
 // export type definition of API

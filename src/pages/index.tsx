@@ -2,19 +2,12 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react/jsx-no-comment-textnodes */
 import { trpc } from "@/utils/trpc";
-//import { OnboardingButton } from "@/utils/getMetaMaskHelper";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import React, { useState } from "react";
-var Web3 = require("web3");
-import getAccount from "@/utils/getAccount";
 import { useUserState } from "../components/hooks/useUser";
-import { isINDB } from "@/backend/router/index";
 
 const btn =
   "inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm font-medium rounded-full text-gray-700 bg-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500";
-
-//declare var window: any;
-
 
 
 
