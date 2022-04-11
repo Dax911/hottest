@@ -112,7 +112,7 @@ export default function Home() {
   );
 }
 
-type NFTFromServer = inferQueryResponse<"get-NFT-pair">["firstNft"];
+type NFTFromServer = inferQueryResponse<"get-NFT-pair">["firstNft"] | any;
 
 const NFTListing: React.FC<{
   nfts: NFTFromServer;
