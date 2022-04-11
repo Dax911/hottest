@@ -52,8 +52,8 @@ export default function Home() {
     refetch();
   };
 
-  const databaseCheck = (account: string | undefined = currentAccount) => {
-    if (account === undefined) {
+  const databaseCheck = (account: string | undefined | null = currentAccount) => {
+    if (account === undefined || account === null) {
       const accounts = "0x0000000000000000000000000000000000000000";
       databaseValidation.mutate({ account: accounts });
       console.log(`I added ${accounts} to the database`);
