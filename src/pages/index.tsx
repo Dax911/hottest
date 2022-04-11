@@ -24,7 +24,7 @@ export default function Home() {
   });
 
   const currentAccounts = useUserState().currentAccount;
-  const currentAccount = "0xfc811061134fA6cCFd22f56Cc91bf6450BeA2D01"
+  const currentAccount = "0xdbf2445e5049c04cda797dae60ac885e7d79df9d"
   console.log(currentAccount);
 
   const databaseValidation = trpc.useMutation(["add-to-db"]);
