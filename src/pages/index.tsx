@@ -118,7 +118,7 @@ const NFTListing: React.FC<{
   nfts: NFTFromServer;
   vote: () => void;
   disabled: boolean;
-}> = (props) => {
+}> = (props: any) => {
   return (
     <div
       className={`flex flex-col items-center transition-opacity ${
