@@ -30,7 +30,7 @@ export default withTRPC<AppRouter>({
      */
     const url = process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}/api/trpc`
-      : "http://hottestnfts.vercel.app/api/trpc";
+      : "https://hottestnfts.vercel.app/api/trpc";
 
     return {
       header() {
