@@ -8,8 +8,8 @@ generator client {
 
 datasource db {
   provider             = "mysql"
-  url                  = "mysql://wx479bz4gfuj:pscale_pw_15zQE432vUwBbU80XPRCVUjFwBvS1wGdpg8bxK9EmgE@d1acbowmn3oi.us-west-2.psdb.cloud/hottest-dev?sslaccept=strict"
-  shadowDatabaseUrl    = "mysql://6w47vzr2y6vq:pscale_pw_5DvPHDl3c8u_PdQbXGusjKgy_vTI2df2avFADilmmws@d1acbowmn3oi.us-west-2.psdb.cloud/hottest-shadow?sslaccept=strict"
+  url                  = "mysql://s4x1gias7vgl:pscale_pw_ghYrQwBP6TSBRJ7YzJnCKC18Wk-jBmfAC1dfUucJOiU@o8bvhtyje9vx.us-west-2.psdb.cloud/hottest?sslaccept=strict"
+  shadowDatabaseUrl    = "mysql://o6zf8izugiwv:pscale_pw_d5TV0NDmueo-2jydyzxMIhCc7n7_-lKLtGuQx6SayQc@o8bvhtyje9vx.us-west-2.psdb.cloud/hottest?sslaccept=strict"
   referentialIntegrity = "prisma"
 }
 
