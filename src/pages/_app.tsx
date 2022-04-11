@@ -1,13 +1,19 @@
 import "tailwindcss/tailwind.css";
 import "../styles/global.css";
 import type { AppProps } from "next/app";
+import { Provider } from "wagmi";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <Provider>
+      <Component {...pageProps} />
+    </Provider>
+  );
 }
 
 import { withTRPC } from "@trpc/next";
 import type { AppRouter } from "@/backend/router";
+//remember to add wagmi wrapper
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {

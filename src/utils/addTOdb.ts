@@ -32,7 +32,9 @@ export async function doFill() {
 
 
     const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
-      if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
+      //this probably does nothing in terms of validating the input 
+	
+	if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
         return {
           name: nft.metadata.name,
           imageUrl: nft.metadata.image,

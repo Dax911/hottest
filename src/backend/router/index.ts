@@ -77,9 +77,9 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     } );
     console.log(nfts)
     if ( nfts.length === 0 ) {
-      return false
+      return { success: false };
     } else {
-      return true;
+      return { success: true, nfts };
     }
 
     },
