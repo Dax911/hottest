@@ -2,7 +2,7 @@ import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
-import { DoFill } from "@/utils/addTOdb";
+import { useAccount } from "wagmi";
 
 
 export const appRouter = trpc.router().query( "get-NFT-pair", {
@@ -50,8 +50,11 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     account: z.string(),
   } ),
 
+  
   async resolve( { input } ) {
-
+    if (input.account === undefined) {
+      throw new Error("No account provided")
+    }
 
 
     const isPresent = await prisma.nft.findFirst( {
@@ -59,13 +62,53 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
         owner: input.account
       }
     } )
-    if ( !isPresent ) {
+    if ( isPresent ) {
       return {
         success: false,
-        message: "You already have NFTs in your account"
+        message: "You already have NFTs in the database."
       }
     } else {
-      DoFill()
+
+      const accounts = input.account
+        //const accounts: string = getAccount().toString();
+    
+        const Web3api = createAlchemyWeb3(
+            "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
+        );
+        const nfts = await (Web3api.alchemy.getNfts( { owner: accounts } ) )
+          const nullVal = null
+        //const formattedNfts = nfts.ownedNfts?.map((nft: any) => {
+          //  Web3api.alchemy.getNfts( { owner: accounts } )});
+        //console.log(nft)
+        //const allNfts = ( await Web3api.alchemy.getNfts( { accounts } ) ).totalCount;
+    
+    
+        const formattedNfts = nfts.ownedNfts?.map((nft: NftMetadata) => {
+          //this probably does nothing in terms of validating the input 
+      
+      if (nft.id.tokenMetadata.tokenType === "ERC721" || !nft.metadata.image.includes("data:image")) {
+            return {
+              name: nft.metadata.name,
+              imageUrl: nft.metadata.image,
+              contractAddress: nft.contract.address,
+              owner: accounts,
+            } 
+          }else {
+              return {
+                //id: nft.contract.address,
+                name: nullVal,
+                imageUrl: nullVal,
+                contractAddress: nullVal,
+                owner: accounts,
+              }
+            
+          }
+          } );
+    
+        const creation = await prisma.nft.createMany( {
+            data: formattedNfts,
+        } );
+
       return {
         success: true,
         message: "NFTs added to your account"
