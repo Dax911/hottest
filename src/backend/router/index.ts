@@ -2,7 +2,7 @@ import * as trpc from "@trpc/server";
 import { z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
-import { useAccount } from "wagmi";
+import { createAlchemyWeb3, NftMetadata } from "@alch/alchemy-web3";
 
 
 export const appRouter = trpc.router().query( "get-NFT-pair", {
