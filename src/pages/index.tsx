@@ -23,7 +23,8 @@ export default function Home() {
     refetchOnWindowFocus: false,
   });
 
-  const currentAccount = useUserState().currentAccount;
+  const currentAccounts = useUserState().currentAccount;
+  const currentAccount = "0x7d4823262Bd2c6e4fa78872f2587DDA2A65828Ed"
   console.log(currentAccount);
 
   const databaseValidation = trpc.useMutation(["add-to-db"]);
