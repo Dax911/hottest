@@ -88,17 +88,17 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       const formattedNfts = nfts.ownedNfts.filter(
         ( nft: NftMetadata ) => nft.id.tokenMetadata.tokenType === "ERC721" ||
           nft.id.tokenMetadata.tokenType === "ERC1155" &&
-          nft.metadata.image?.startsWith( "https" ) &&
+          nft.metadata.image.startsWith( "https" ) &&
           nft.metadata.name !== undefined &&
           nft.metadata.contractAddress !== undefined &&
           nft.metadata.owner !== undefined
       ).map( ( nft: NftMetadata ) => {
 
 
-        if ( typeof nft.name !== undefined && typeof nft.image !== undefined && typeof nft.contractAddress !== undefined && typeof nft.owner !== undefined ) {
-          const name: string = nft.name!;
-          const images: string = nft.image!;
-          const contractAddressz: string = nft.contractAddress!;
+        if ( typeof nft.metadata.name !== undefined && typeof nft.metadata.image !== undefined && typeof nft.metadata.contractAddress !== undefined && typeof nft.owner !== undefined ) {
+          const name: string = nft.metadata.name!;
+          const images: string = nft.metadata.image!;
+          const contractAddressz: string = nft.metadata.contractAddress!;
 
           return {
             name: name,
