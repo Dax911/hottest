@@ -77,7 +77,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       const nfts = await ( Web3api.alchemy.getNfts( { owner: accounts } ) )
       const nullVal = null
 
-      const formattedNfts = nfts.ownedNfts?.filter( 
+      const formattedNfts = nfts.ownedNfts.filter( 
         ( nft: NftMetadata ) => 
         nft.id.tokenMetadata.tokenType === "ERC721" && 
         nft.metadata.image?.startsWith( "https" ) && 
