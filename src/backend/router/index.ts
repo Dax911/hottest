@@ -77,23 +77,18 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       const nfts = await ( Web3api.alchemy.getNfts( { owner: accounts } ) )
       const nullVal = null
 
-      const formattedNfts = nfts.ownedNfts?.map( ( nft: NftMetadata ) => {
+      const formattedNfts = nfts.ownedNfts?.filter( ( nft: NftMetadata ) => nft.id.tokenMetadata.tokenType === "ERC721" && nft.metadata.image.startsWith( "https" ) ).map( ( nft: NftMetadata ) => {
         //this probably does nothing in terms of validating the input 
-
-        if ( nft.id.tokenMetadata.tokenType === "ERC721" && nft.image?.startsWith("https")  ) {
-          return {
-            name: nft.metadata.name,
-            imageUrl: nft.metadata.image,
-            contractAddress: nft.contract.address,
-            owner: accounts,
-          }
-        } else {
-          throw new Error( "Invalid NFT" );
-
+        return {
+          name: nft.name,
+          imageUrl: nft.image,
+          contractAddress: nft.contractAddress,
+          owner: accounts,
         }
       } );
-        const creation = await prisma.nft.createMany( {
-          data: formattedNfts,
+
+      const creation = await prisma.nft.createMany( {
+        data: formattedNfts,
       } );
 
       return {
