@@ -80,7 +80,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       const formattedNfts = nfts.ownedNfts?.map( ( nft: NftMetadata ) => {
         //this probably does nothing in terms of validating the input 
 
-        if ( nft.id.tokenMetadata.tokenType === "ERC721" && nft.id.tokenMetadata.imageUrl !== nullVal && nft.id.tokenMetadata.imageUrl.startswith("https") || nft.id.tokenMetadata.imageUrl.startswith("data") || nft.id.tokenMetadata.imageUrl.startswith("ipfs") ) {
+        if ( nft.id.tokenMetadata.tokenType === "ERC721" && nft.id.tokenMetadata.imageUrl !== nullVal && nft.id.tokenMetadata.imageUrl.startswith("https", "ipfs", "data")  ) {
           return {
             name: nft.metadata.name,
             imageUrl: nft.metadata.image,
@@ -88,19 +88,12 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
             owner: accounts,
           }
         } else {
-          return {
-            //id: nft.contract.address,
-            name: nullVal,
-            imageUrl: nullVal,
-            contractAddress: nullVal,
-            owner: accounts,
-          }
+          throw new Error( "Invalid NFT" );
 
         }
       } );
-
-      const creation = await prisma.nft.createMany( {
-        data: formattedNfts,
+        const creation = await prisma.nft.createMany( {
+          data: formattedNfts,
       } );
 
       return {
