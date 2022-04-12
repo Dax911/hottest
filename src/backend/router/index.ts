@@ -77,7 +77,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     } else {
 
       const accounts = input.account
-
+      
       const Web3api = createAlchemyWeb3(
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
       );
@@ -86,40 +86,38 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
 
 
       const formattedNfts = nfts.ownedNfts.filter(
-        ( nft: NftMetadata ) =>
-          nft.id.tokenMetadata.tokenType === "ERC721" ||
+        ( nft: NftMetadata ) => nft.id.tokenMetadata.tokenType === "ERC721" ||
           nft.id.tokenMetadata.tokenType === "ERC1155" &&
           nft.metadata.image?.startsWith( "https" ) &&
           nft.metadata.name !== undefined &&
           nft.metadata.contractAddress !== undefined &&
           nft.metadata.owner !== undefined
-      ).map( async ( nft: NftMetadata ) => {
+      ).map( ( nft: NftMetadata ) => {
 
 
         if ( typeof nft.name !== undefined && typeof nft.image !== undefined && typeof nft.contractAddress !== undefined && typeof nft.owner !== undefined ) {
-          const name: string = nft.name!
-          const images: string = nft.image!
-          const contractAddressz: string = nft.contractAddress!
+          const name: string = nft.name!;
+          const images: string = nft.image!;
+          const contractAddressz: string = nft.contractAddress!;
 
-
-           await prisma.nft.createMany( {
-            data: {
-              name: name,
-              imageUrl: images,
-              contractAddress: contractAddressz,
-              owner: accounts,
-            }
-          }
-          )
+          return {
+            name: name,
+            imageUrl: images,
+            contractAddress: contractAddressz,
+            owner: accounts,
+          };
         }
-      } );
+      } ) as unknown as formattedNfts
 
 
-
+    
+      const creation = await prisma.nft.createMany( {
+        data: formattedNfts,
+      } ) 
 
       return {
         success: true,
-        creation: formattedNfts,
+        creation: creation,
         message: "NFTs added to your account"
 
       }
