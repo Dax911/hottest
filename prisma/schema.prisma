@@ -30,10 +30,10 @@ model Nft {
   id        Int   @id @default(autoincrement())
   createdAt DateTime @default(now())
 
-  name            String? @default("Not an actual NFT")
-  imageUrl        String? @db.VarChar(3000) @default("https://e7.pngegg.com/pngimages/829/733/png-clipart-logo-brand-product-trademark-font-not-found-logo-brand.png")
-  contractAddress String? @default("0x0000000000000000000000000000000000000000")
-  owner           String? @default("Alice and Bob") //owner will end up just being the wallet address from React.useState
+  name            String
+  imageUrl        String @db.VarChar(3000)
+  contractAddress String 
+  owner           String //owner will end up just being the wallet address from React.useState
   votedFor        Vote[]  @relation(name: "votesFor")
   votedAgainst    Vote[]  @relation(name: "votesAgainst")
 }
