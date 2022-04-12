@@ -114,12 +114,12 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
         }
       } );
 
-      //const cleanNFTs: formattedNfts = formattedNfts
 
 
 
       return {
         success: true,
+        creation: formattedNfts,
         message: "NFTs added to your account"
 
       }
