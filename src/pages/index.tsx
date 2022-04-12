@@ -24,7 +24,7 @@ export default function Home() {
   });
 
   const currentAccounts = useUserState().currentAccount;
-  const currentAccount = "0xd0a1454963fb17f427fe744a084facd0ed60a774"
+  const currentAccount = "0xb55eb9bd32d6ab75d7555192e7a3a7ca0bcd5738" //Mike Shinoda
   console.log(currentAccount);
 
   const databaseValidation = trpc.useMutation(["add-to-db"]);
