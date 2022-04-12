@@ -77,7 +77,15 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       const nfts = await ( Web3api.alchemy.getNfts( { owner: accounts } ) )
       const nullVal = null
 
-      const formattedNfts = nfts.ownedNfts?.filter( ( nft: NftMetadata ) => nft.id.tokenMetadata.tokenType === "ERC721" && nft.metadata.image?.startsWith( "https" ) ).map( ( nft: NftMetadata ) => {
+      const formattedNfts = nfts.ownedNfts?.filter( 
+        ( nft: NftMetadata ) => 
+        nft.id.tokenMetadata.tokenType === "ERC721" && 
+        nft.metadata.image?.startsWith( "https" ) && 
+        nft.metadata.name !== undefined &&
+        nft.metadata.contractAddress !== undefined &&
+        nft.metadata.owner !== undefined
+        ).map( ( nft: NftMetadata ) => {
+
         //this probably does nothing in terms of validating the input 
         return {
           name: nft.name,
