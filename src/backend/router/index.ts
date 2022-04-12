@@ -95,7 +95,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       ).map( ( nft: NftMetadata ) => {
 
 
-        if ( typeof nft.metadata.name !== undefined && typeof nft.metadata.image !== undefined && typeof nft.metadata.contractAddress !== undefined && typeof nft.owner !== undefined ) {
+        //if ( typeof nft.metadata.name !== undefined && typeof nft.metadata.image !== undefined && typeof nft.metadata.contractAddress !== undefined && typeof nft.owner !== undefined ) {
           const name: string = nft.metadata.name!;
           const images: string = nft.metadata.image!;
           const contractAddressz: string = nft.metadata.contractAddress!;
@@ -106,7 +106,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
             contractAddress: contractAddressz,
             owner: accounts,
           };
-        }
+        //}
       } ) as unknown as formattedNfts
 
 
