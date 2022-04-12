@@ -6,7 +6,7 @@ import { createAlchemyWeb3, NftMetadata } from "@alch/alchemy-web3";
 
 type formattedNfts = {
   name: string;
-  image: string;
+  imageUrl: string;
   contractAddress: string;
   owner: string;
 }
