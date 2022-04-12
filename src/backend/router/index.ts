@@ -1,8 +1,15 @@
 import * as trpc from "@trpc/server";
-import { z } from "zod";
+import { string, z } from "zod";
 import { prisma } from "../utils/prisma";
 import { getNFTsForVote } from "@/utils/getRandomIndex";
 import { createAlchemyWeb3, NftMetadata } from "@alch/alchemy-web3";
+
+type BaseNft = {
+  name: string;
+  image: string;
+  contractAddress: string;
+  owner: string;
+}
 
 
 export const appRouter = trpc.router().query( "get-NFT-pair", {
@@ -70,30 +77,41 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
     } else {
 
       const accounts = input.account
-
+      
       const Web3api = createAlchemyWeb3(
         "https://eth-mainnet.alchemyapi.io/v2/-22HQEXbJO6vmXDVTO_mviFzLsnUHi4t"
       );
       const nfts = await ( Web3api.alchemy.getNfts( { owner: accounts } ) )
       const nullVal = null
 
+
       const formattedNfts = nfts.ownedNfts.filter( 
         ( nft: NftMetadata ) => 
-        nft.id.tokenMetadata.tokenType === "ERC721" && 
+        nft.id.tokenMetadata.tokenType === "ERC721" ||
+        nft.id.tokenMetadata.tokenType === "ERC1155" && 
         nft.metadata.image?.startsWith( "https" ) && 
         nft.metadata.name !== undefined &&
         nft.metadata.contractAddress !== undefined &&
         nft.metadata.owner !== undefined
         ).map( ( nft: NftMetadata ) => {
 
+       
         //this probably does nothing in terms of validating the input 
-        return {
-          name: nft.name,
-          imageUrl: nft.image,
-          contractAddress: nft.contractAddress,
+        if (typeof nft.name !== undefined && typeof nft.image !== undefined && typeof nft.contractAddress !== undefined && typeof nft.owner !== undefined) {
+        const name:string = nft.name!
+        const images: string = nft.image!
+        const contractAddressz: string = nft.contractAddress!
+          return {
+          name: name,
+          imageUrl: images,
+          contractAddress: contractAddressz,
           owner: accounts,
         }
+      }
       } );
+
+
+
 
       const creation = await prisma.nft.createMany( {
         data: formattedNfts,
