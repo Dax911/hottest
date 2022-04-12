@@ -80,7 +80,7 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
       const formattedNfts = nfts.ownedNfts?.map( ( nft: NftMetadata ) => {
         //this probably does nothing in terms of validating the input 
 
-        if ( nft.id.tokenMetadata.tokenType === "ERC721" && nft.id.tokenMetadata.imageUrl.startsWith("https")  ) {
+        if ( nft.id.tokenMetadata.tokenType === "ERC721" && nft.image?.startsWith("https")  ) {
           return {
             name: nft.metadata.name,
             imageUrl: nft.metadata.image,
