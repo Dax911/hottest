@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useAccount, useConnect, useNetwork } from "wagmi";
-import { utils } from "ethers";
 import usePrevious from "./usePrevious";
 
 

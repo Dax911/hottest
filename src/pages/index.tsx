@@ -53,11 +53,11 @@ export default function Home() {
     refetch();
   };
 
-  const databaseCheck = (account: string | undefined | null = currentAccount) => {
+  const databaseCheck = (account: string | undefined = currentAccount) => {
     if (account === undefined || account === null) {
-      const accounts = "0x0000000000000000000000000000000000000000";
-      databaseValidation.mutate({ account: accounts });
-      console.log(`I added ${accounts} to the database`);
+      //const accounts = "0x0000000000000000000000000000000000000000";
+      databaseValidation.mutate({ account: account });
+      console.log(`I added ${account} to the database`);
     } else {
       const accounts = account;
       databaseValidation.mutate({ account: accounts });
@@ -147,7 +147,8 @@ const NFTListing: React.FC<{
         className={btn}
         onClick={() => props.vote()}
         disabled={props.disabled}
-      >
+      ><Link>
+      </Link>
         VOTE
       </button>
       <div className="p-2" />

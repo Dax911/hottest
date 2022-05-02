@@ -52,7 +52,9 @@ export const appRouter = trpc.router().query( "get-NFT-pair", {
   },
 }
 
-).mutation( "add-to-db", {
+)
+
+.mutation( "add-to-db", {
   input: z.object( {
     account: z.string(),
   } ),

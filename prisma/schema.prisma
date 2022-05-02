@@ -5,7 +5,7 @@ generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["referentialIntegrity"]
 }
-
+//if nft shows send nft from something in my database
 datasource db {
   provider             = "mysql"
   url                  = env("DATABASE_URL")
